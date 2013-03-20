@@ -29,187 +29,187 @@ class MakeWithNameTests extends FunSuite {
     import OneArgMaker.onearg
     import TwoArgsMaker.twoargs
 
-    // No argument tests
+    // No argument tests (val)
 
-    val noargs1 = noargs ()
+    val valnoargs1 = noargs ()
 
-    test ("a class level NoArgs gets the correct name") {
-        expectResult ("noargs1", "class level value name") (noargs1.name)
+    test ("a class level NoArgs val gets the correct name") {
+        expectResult ("valnoargs1", "class level val value name") (valnoargs1.name)
     }
 
-    def noArgsMethod : NoArgs = {
-        val noargs2 = noargs ()
-        noargs2
+    def valNoArgsMethod : NoArgs = {
+        val valnoargs2 = noargs ()
+        valnoargs2
     }
 
-    test ("a method level NoArgs gets the correct name") {
-        expectResult ("noargs2", "noArgsMethod level value name") (noArgsMethod.name)
+    test ("a method level NoArgs val gets the correct name") {
+        expectResult ("valnoargs2", "method level val value name") (valNoArgsMethod.name)
     }
 
-    object noArgsObject {
-        val noargs3 = noargs ()
+    object valNoArgsObject {
+        val valnoargs3 = noargs ()
     }
 
-    test ("an object level NoArgs gets the correct name") {
-        expectResult ("noargs3", "object level value name") (noArgsObject.noargs3.name)
+    test ("an object level NoArgs val gets the correct name") {
+        expectResult ("valnoargs3", "object level val value name") (valNoArgsObject.valnoargs3.name)
     }
 
-    trait noArgsTrait {
-        val noargs4 = noargs ()
+    trait valNoArgsTrait {
+        val valnoargs4 = noargs ()
     }
 
-    object anotherNoArgsObject extends noArgsTrait
+    object valAnotherNoArgsObject extends valNoArgsTrait
 
-    test ("a trait level NoArgs gets the correct name") {
-        expectResult ("noargs4", "trait level value name") (anotherNoArgsObject.noargs4.name)
+    test ("a trait level NoArgs val gets the correct name") {
+        expectResult ("valnoargs4", "trait level val value name") (valAnotherNoArgsObject.valnoargs4.name)
     }
 
-    val noargs5 = Some (noargs ())
+    val valnoargs5 = Some (noargs ())
 
-    test ("an embedded NoArgs has a default name") {
-        expectResult ("noargs", "embedded value name") (noargs5.get.name)
+    test ("an embedded NoArgs val has a default name") {
+        expectResult ("noargs", "embedded value val name") (valnoargs5.get.name)
     }
 
     // One argument tests
 
-    val onearg1 = onearg (Arg (1))
+    val valonearg1 = onearg (Arg (1))
 
-    test ("a class level OneArg gets the correct name") {
-        expectResult ("onearg1", "class level value name") (onearg1.name)
+    test ("a class level OneArg val gets the correct name") {
+        expectResult ("valonearg1", "class level val value name") (valonearg1.name)
     }
 
-    test ("a class level OneArg gets the correct Arg field") {
-        expectResult (Arg (1), "class level value a") (onearg1.a)
+    test ("a class level OneArg val gets the correct Arg field") {
+        expectResult (Arg (1), "class level val value a") (valonearg1.a)
     }
 
-    def oneArgMethod : OneArg = {
-        val onearg2 = onearg (Arg (2))
-        onearg2
+    def valOneArgMethod : OneArg = {
+        val valonearg2 = onearg (Arg (2))
+        valonearg2
     }
 
-    test ("a twoArgsMethod level OneArg gets the correct name") {
-        expectResult ("onearg2", "twoArgsMethod level value name") (oneArgMethod.name)
+    test ("a method level OneArg val gets the correct name") {
+        expectResult ("valonearg2", "method level value name") (valOneArgMethod.name)
     }
 
-    test ("a twoArgsMethod level OneArg gets the correct Arg field") {
-        expectResult (Arg (2), "twoArgsMethod level value a") (oneArgMethod.a)
+    test ("a method level OneArg val gets the correct Arg field") {
+        expectResult (Arg (2), "method level val value a") (valOneArgMethod.a)
     }
 
-    object oneArgObject {
-        val onearg3 = onearg (Arg (3))
+    object valOneArgObject {
+        val valonearg3 = onearg (Arg (3))
     }
 
-    test ("an object level OneArg gets the correct name") {
-        expectResult ("onearg3", "object level value name") (oneArgObject.onearg3.name)
+    test ("an object level OneArg val gets the correct name") {
+        expectResult ("valonearg3", "object level val value name") (valOneArgObject.valonearg3.name)
     }
 
-    test ("an object level OneArg gets the correct Arg field") {
-        expectResult (Arg (3), "object level value a") (oneArgObject.onearg3.a)
+    test ("an object level OneArg val gets the correct Arg field") {
+        expectResult (Arg (3), "object level val value a") (valOneArgObject.valonearg3.a)
     }
 
-    trait oneArgTrait {
-        val onearg4 = onearg (Arg (4))
+    trait valOneArgTrait {
+        val valonearg4 = onearg (Arg (4))
     }
 
-    object anotherOneArgObject extends oneArgTrait
+    object valAnotherOneArgObject extends valOneArgTrait
 
-    test ("a trait level OneArg gets the correct name") {
-        expectResult ("onearg4", "trait level value name") (anotherOneArgObject.onearg4.name)
+    test ("a trait level OneArg val gets the correct name") {
+        expectResult ("valonearg4", "trait level val value name") (valAnotherOneArgObject.valonearg4.name)
     }
 
-    test ("a trait level OneArg gets the correct Arg field") {
-        expectResult (Arg (4), "trait level value a") (anotherOneArgObject.onearg4.a)
+    test ("a trait level OneArg val gets the correct Arg field") {
+        expectResult (Arg (4), "trait level val value a") (valAnotherOneArgObject.valonearg4.a)
     }
 
-    val onearg5 = Some (onearg (Arg (5)))
+    val valonearg5 = Some (onearg (Arg (5)))
 
-    test ("an embedded OneArg has a default name") {
-        expectResult ("onearg", "embedded value name") (onearg5.get.name)
+    test ("an embedded OneArg val has a default name") {
+        expectResult ("onearg", "embedded value val name") (valonearg5.get.name)
     }
 
-    test ("an embedded OneArg gets the correct Arg field") {
-        expectResult (Arg (5), "embedded value a") (onearg5.get.a)
+    test ("an embedded OneArg val gets the correct Arg field") {
+        expectResult (Arg (5), "embedded value val a") (valonearg5.get.a)
     }
 
     // Two argument tests
 
-    val twoargs1 = twoargs (1, "one")
+    val valtwoargs1 = twoargs (1, "one")
 
-    test ("a class level TwoArgs gets the correct name") {
-        expectResult ("twoargs1", "class level value name") (twoargs1.name)
+    test ("a class level TwoArgs val gets the correct name") {
+        expectResult ("valtwoargs1", "class level value val name") (valtwoargs1.name)
     }
 
-    test ("a class level TwoArgs gets the correct integer field") {
-        expectResult (1, "class level value i") (twoargs1.i)
+    test ("a class level TwoArgs val gets the correct integer field") {
+        expectResult (1, "class level val value i") (valtwoargs1.i)
     }
 
-    test ("a class level TwoArgs gets the correct string field") {
-        expectResult ("one", "class level value s") (twoargs1.s)
+    test ("a class level TwoArgs val gets the correct string field") {
+        expectResult ("one", "class level val value s") (valtwoargs1.s)
     }
 
-    def twoArgsMethod : TwoArgs = {
-        val twoargs2 = twoargs (2, "two")
-        twoargs2
+    def valTwoArgsMethod : TwoArgs = {
+        val valtwoargs2 = twoargs (2, "two")
+        valtwoargs2
     }
 
-    test ("a twoArgsMethod level TwoArgs gets the correct name") {
-        expectResult ("twoargs2", "twoArgsMethod level value name") (twoArgsMethod.name)
+    test ("a twoArgsMethod level TwoArgs val gets the correct name") {
+        expectResult ("valtwoargs2", "twoArgsMethod level val value name") (valTwoArgsMethod.name)
     }
 
-    test ("a twoArgsMethod level TwoArgs gets the correct integer field") {
-        expectResult (2, "twoArgsMethod level value i") (twoArgsMethod.i)
+    test ("a twoArgsMethod level TwoArgs val gets the correct integer field") {
+        expectResult (2, "twoArgsMethod level val value i") (valTwoArgsMethod.i)
     }
 
-    test ("a twoArgsMethod level TwoArgs gets the correct string field") {
-        expectResult ("two", "twoArgsMethod level value s") (twoArgsMethod.s)
+    test ("a twoArgsMethod level TwoArgs val gets the correct string field") {
+        expectResult ("two", "twoArgsMethod level val value s") (valTwoArgsMethod.s)
     }
 
-    object twoArgsObject {
-        val twoargs3 = twoargs (3, "three")
+    object valTwoArgsObject {
+        val valtwoargs3 = twoargs (3, "three")
     }
 
-    test ("an object level TwoArgs gets the correct name") {
-        expectResult ("twoargs3", "object level value name") (twoArgsObject.twoargs3.name)
+    test ("an object level TwoArgs val gets the correct name") {
+        expectResult ("valtwoargs3", "object level val value name") (valTwoArgsObject.valtwoargs3.name)
     }
 
-    test ("an object level TwoArgs gets the correct integer field") {
-        expectResult (3, "object level value i") (twoArgsObject.twoargs3.i)
+    test ("an object level TwoArgs val gets the correct integer field") {
+        expectResult (3, "object level val value i") (valTwoArgsObject.valtwoargs3.i)
     }
 
-    test ("an object level TwoArgs gets the correct string field") {
-        expectResult ("three", "object level value s") (twoArgsObject.twoargs3.s)
+    test ("an object level TwoArgs val gets the correct string field") {
+        expectResult ("three", "object level val value s") (valTwoArgsObject.valtwoargs3.s)
     }
 
-    trait twoArgsTrait {
-        val twoargs4 = twoargs (4, "four")
+    trait valTwoArgsTrait {
+        val valtwoargs4 = twoargs (4, "four")
     }
 
-    object anotherTwoArgsObject extends twoArgsTrait
+    object valAnotherTwoArgsObject extends valTwoArgsTrait
 
-    test ("a trait level TwoArgs gets the correct name") {
-        expectResult ("twoargs4", "trait level value name") (anotherTwoArgsObject.twoargs4.name)
+    test ("a trait level TwoArgs val gets the correct name") {
+        expectResult ("valtwoargs4", "trait level val value name") (valAnotherTwoArgsObject.valtwoargs4.name)
     }
 
-    test ("a trait level TwoArgs gets the correct integer field") {
-        expectResult (4, "trait level value i") (anotherTwoArgsObject.twoargs4.i)
+    test ("a trait level TwoArgs val gets the correct integer field") {
+        expectResult (4, "trait level val value i") (valAnotherTwoArgsObject.valtwoargs4.i)
     }
 
-    test ("a trait level TwoArgs gets the correct string field") {
-        expectResult ("four", "trait level value s") (anotherTwoArgsObject.twoargs4.s)
+    test ("a trait level TwoArgs val gets the correct string field") {
+        expectResult ("four", "trait level val value s") (valAnotherTwoArgsObject.valtwoargs4.s)
     }
 
-    val twoargs5 = Some (twoargs (5, "five"))
+    val valtwoargs5 = Some (twoargs (5, "five"))
 
-    test ("an embedded TwoArgs has a default name") {
-        expectResult ("twoargs", "embedded value name") (twoargs5.get.name)
+    test ("an embedded TwoArgs val has a default name") {
+        expectResult ("twoargs", "embedded val value name") (valtwoargs5.get.name)
     }
 
-    test ("an embedded TwoArgs gets the correct integer field") {
-        expectResult (5, "embedded value i") (twoargs5.get.i)
+    test ("an embedded TwoArgs val gets the correct integer field") {
+        expectResult (5, "embedded val value i") (valtwoargs5.get.i)
     }
 
-    test ("an embedded TwoArgs gets the correct string field") {
-        expectResult ("five", "embedded value s") (twoargs5.get.s)
+    test ("an embedded TwoArgs val gets the correct string field") {
+        expectResult ("five", "embedded val value s") (valtwoargs5.get.s)
     }
 
 }
