@@ -35,9 +35,6 @@ object OneArgMaker {
         macro makeOneArgWithName
 
     def makeOneArgWithName (c : Context) (a : c.Expr[Arg]) : c.Expr[OneArg] =
-        makeWithName (c) ("onearg", "OneArgMaker", "mkOneArg", a)
-
-    def mkOneArg (name : String, a : Arg) : OneArg =
-        OneArg (name, a)
+        makeWithName (c) ("onearg", "OneArg", "apply", a)
 
 }
