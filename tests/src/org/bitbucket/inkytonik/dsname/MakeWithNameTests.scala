@@ -74,11 +74,11 @@ class MakeWithNameTests extends FunSuite {
 
     val onearg1 = onearg (Arg (1))
 
-    test ("a class level OneArgs gets the correct name") {
+    test ("a class level OneArg gets the correct name") {
         expectResult ("onearg1", "class level value name") (onearg1.name)
     }
 
-    test ("a class level OneArgs gets the correct Arg field") {
+    test ("a class level OneArg gets the correct Arg field") {
         expectResult (Arg (1), "class level value a") (onearg1.a)
     }
 
@@ -87,11 +87,11 @@ class MakeWithNameTests extends FunSuite {
         onearg2
     }
 
-    test ("a twoArgsMethod level OneArgs gets the correct name") {
+    test ("a twoArgsMethod level OneArg gets the correct name") {
         expectResult ("onearg2", "twoArgsMethod level value name") (oneArgMethod.name)
     }
 
-    test ("a twoArgsMethod level OneArgs gets the correct Arg field") {
+    test ("a twoArgsMethod level OneArg gets the correct Arg field") {
         expectResult (Arg (2), "twoArgsMethod level value a") (oneArgMethod.a)
     }
 
@@ -99,11 +99,11 @@ class MakeWithNameTests extends FunSuite {
         val onearg3 = onearg (Arg (3))
     }
 
-    test ("an object level OneArgs gets the correct name") {
+    test ("an object level OneArg gets the correct name") {
         expectResult ("onearg3", "object level value name") (oneArgObject.onearg3.name)
     }
 
-    test ("an object level OneArgs gets the correct Arg field") {
+    test ("an object level OneArg gets the correct Arg field") {
         expectResult (Arg (3), "object level value a") (oneArgObject.onearg3.a)
     }
 
@@ -111,23 +111,23 @@ class MakeWithNameTests extends FunSuite {
         val onearg4 = onearg (Arg (4))
     }
 
-    object anotherOneArgsObject extends oneArgTrait
+    object anotherOneArgObject extends oneArgTrait
 
-    test ("a trait level OneArgs gets the correct name") {
-        expectResult ("onearg4", "trait level value name") (anotherOneArgsObject.onearg4.name)
+    test ("a trait level OneArg gets the correct name") {
+        expectResult ("onearg4", "trait level value name") (anotherOneArgObject.onearg4.name)
     }
 
-    test ("a trait level OneArgs gets the correct Arg field") {
-        expectResult (Arg (4), "trait level value a") (anotherOneArgsObject.onearg4.a)
+    test ("a trait level OneArg gets the correct Arg field") {
+        expectResult (Arg (4), "trait level value a") (anotherOneArgObject.onearg4.a)
     }
 
     val onearg5 = Some (onearg (Arg (5)))
 
-    test ("an embedded OneArgs has a default name") {
+    test ("an embedded OneArg has a default name") {
         expectResult ("onearg", "embedded value name") (onearg5.get.name)
     }
 
-    test ("an embedded OneArgs gets the correct Arg field") {
+    test ("an embedded OneArg gets the correct Arg field") {
         expectResult (Arg (5), "embedded value a") (onearg5.get.a)
     }
 
