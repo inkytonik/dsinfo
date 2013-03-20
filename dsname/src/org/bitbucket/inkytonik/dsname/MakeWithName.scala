@@ -46,7 +46,6 @@ object MakeWithName {
         val isThisDef : PartialFunction[c.Tree,String] = {
 
             case d @ ValDef (_, name, _, rhs) if rhs.pos == c.enclosingPosition =>
-                // println (s"d = ${u.showRaw (d)}")
                 name.decoded
 
             // FIXME other cases, DefDef, ...
@@ -92,19 +91,6 @@ object MakeWithName {
                     }
 
             }
-
-        // println (s"i = ${u.showRaw (i)}")
-        // println
-        // println (s"c.prefix.tree = ${u.showRaw (c.prefix.tree)}")
-        // println
-        // println (s"c.macroApplication = ${u.showRaw (c.macroApplication)}")
-        // println
-        // println (s"c.enclosingClass = ${u.showRaw (c.enclosingClass)}")
-        // println
-        // println (s"c.enclosingMethod = ${u.showRaw (c.enclosingMethod)}")
-        // println
-        // println (s"enclosingDef = $enclosingDef")
-        // println
 
         val t = Apply (Select (Ident (newTermName (objectName)),
                                newTermName (funcName)),
