@@ -57,10 +57,7 @@ object MakeWithName {
          * otherwise return the macro name.
          */
         def findDefNameIn (body : List[c.Tree]) : String =
-            body.collectFirst (isThisDef) match {
-                case Some (name) => name
-                case None        => macroName
-            }
+            body.collectFirst (isThisDef).getOrElse (macroName)
 
         /**
          * Find the name of the definition for which this macro application is
