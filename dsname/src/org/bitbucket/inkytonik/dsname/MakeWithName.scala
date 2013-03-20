@@ -25,11 +25,10 @@ object MakeWithName {
 
     import scala.reflect.macros.Context
 
-    def makeWithName[T,A,B] (c : Context) (macroName : String,
-                                           objectName : String,
-                                           funcName : String,
-                                           arg1 : c.Expr[A],
-                                           arg2 : c.Expr[B]) : c.Expr[T] = {
+    def makeWithName[T] (c : Context) (macroName : String,
+                                       objectName : String,
+                                       funcName : String,
+                                       args : c.Expr[_]*) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
@@ -38,7 +37,7 @@ object MakeWithName {
          * A list of the trees of the expressions that were supplied as the
          * macro arguments.
          */
-        val macroArgs = List (arg1, arg2) map (_.tree)
+        val macroArgs = (args map (_.tree)).toList
 
         /**
          * If the given tree is a definition that has this macro application
@@ -109,8 +108,7 @@ object MakeWithName {
 
         val t = Apply (Select (Ident (newTermName (objectName)),
                                newTermName (funcName)),
-                       List (Literal (Constant (enclosingDefName)),
-                             arg1.tree, arg2.tree))
+                       Literal (Constant (enclosingDefName)) :: macroArgs)
         c.Expr[T] (t)
 
     }
