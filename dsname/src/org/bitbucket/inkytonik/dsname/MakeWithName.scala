@@ -40,24 +40,37 @@ object MakeWithName {
         val macroArgs = (args map (_.tree)).toList
 
         /**
-         * If the given tree is a definition that has this macro application
-         * on the right-hand side, return its name, otherwise be undefined.
+         * Is this tree this macro invocation?
          */
-        val isThisDef : PartialFunction[c.Tree,String] = {
+        def isThisInvocation (tree : c.Tree) : Boolean =
+            tree.pos == c.enclosingPosition
 
-            case d @ ValDef (_, name, _, rhs) if rhs.pos == c.enclosingPosition =>
+        /**
+         * If the given tree is a value definition that has this macro
+         * application on the right-hand side, return its name, otherwise be
+         * undefined.
+         */
+        val isThisVal : PartialFunction[c.Tree,String] = {
+
+            case d @ ValDef (_, name, _, rhs) if isThisInvocation (rhs) =>
                 name.decoded
-
-            // FIXME other cases, DefDef, ...
 
         }
 
         /**
-         * Try to find this def in a list of trees. If found, return its name,
-         * otherwise return the macro name.
+         * Try to find this invocation in a `val` in a list of trees. If found,
+         * return `Some (name)` where `name` is the name of the `val`, otherwise
+         * return `None`.
          */
-        def findDefNameIn (body : List[c.Tree]) : String =
-            body.collectFirst (isThisDef).getOrElse (macroName)
+        def optFindValNameIn (body : List[c.Tree]) : Option[String] =
+            body.collectFirst (isThisVal)
+
+        /**
+         * Try to find this invocation in a `val` in a list of trees. If found,
+         * return the name of the `val`, otherwise return the macro name.
+         */
+        def getValNameIn (body : List[c.Tree]) : String =
+            optFindValNameIn (body).getOrElse (macroName)
 
         /**
          * Find the name of the definition for which this macro application is
@@ -67,32 +80,47 @@ object MakeWithName {
         def enclosingDefName : String =
             c.enclosingMethod match {
 
-                case DefDef (_, _, _, _, _, Block (body, _)) =>
-                    findDefNameIn (body)
+                // Body of def is the macro invocation
+                case d @ DefDef (_, defname, _, _, _, body) if isThisInvocation (body) =>
+                    defname.decoded
 
+                // def has a block body
+                case d @ DefDef (_, defname, _, _, _, Block (body, expr)) =>
+                    optFindValNameIn (body) match {
+                        // It's a val inside the def
+                        case Some (name) =>
+                            name
+                        // It's the value of the def's body
+                        case None if isThisInvocation (expr) =>
+                            defname.decoded
+                        case None =>
+                            macroName
+                    }
+
+                // Not a def, look for a val in enclosing template bodies
                 case _ =>
 
                     c.enclosingClass match {
 
                         case ClassDef (_, _, _, Template (_, _, body)) =>
-                            findDefNameIn (body)
+                            getValNameIn (body)
 
                         case ModuleDef (_, _, Template (_, _, body)) =>
-                            findDefNameIn (body)
+                            getValNameIn (body)
 
                         case tree =>
                             c.error (c.enclosingPosition,
-                                     s"unexpected context for def: ${u.showRaw (tree)}")
+                                     s"makeWithName: unexpected context ${u.showRaw (tree)}")
                             "dummy"
 
                     }
 
             }
 
-        val t = Apply (Select (Ident (newTermName (objectName)),
-                               newTermName (funcName)),
-                       Literal (Constant (enclosingDefName)) :: macroArgs)
-        c.Expr[T] (t)
+        // Return call to specified method passing the name and the original args
+        c.Expr[T] (Apply (Select (Ident (newTermName (objectName)),
+                                  newTermName (funcName)),
+                          Literal (Constant (enclosingDefName)) :: macroArgs))
 
     }
 
