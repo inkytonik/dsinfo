@@ -2,61 +2,6 @@
 
 name := "dsname"
 
-version := "0.1.0-SNAPSHOT"
-
-organization := "org.bitbucket.inkytonik.dsname"
-
-// Scala compiler settings
-
-scalaVersion := "2.10.0"
-
-scalacOptions := Seq ("-deprecation", "-unchecked")
-
-scalacOptions in Compile <<= (scalaVersion, scalacOptions) map {
-    (version, options) =>
-        val versionOptions =
-            if (version.startsWith ("2.10"))
-                Seq ("-feature")
-            else
-                Seq ()
-        options ++ versionOptions
-}
-
-scalacOptions in Test <<= (scalaVersion, scalacOptions) map {
-    (version, options) =>
-        val versionOptions =
-            if (version.startsWith ("2.10"))
-                Seq ("-feature")
-            else
-                Seq ()
-        options ++ versionOptions
-}
-
-// Interactive settings
-
-logLevel := Level.Info
-
-shellPrompt <<= (name, version) { (n, v) =>
-     _ => n + " " + v + "> "
-}
-
-// Dependencies
-
-libraryDependencies <++= scalaVersion {
-    version =>
-        Seq (
-            "org.scala-lang" % "scala-reflect" % "2.10.0"
-        )
-}
-
-// No main class since dsprofile is a library
-
-mainClass := None
-
-// Don't run tests in parallel because some bits are not thread safe yet
-
-parallelExecution in Test := false
-
 // Specify how to find source and test files.  Main sources are
 //    - in src directory
 //    - all .scala files, except
@@ -90,20 +35,6 @@ unmanagedResources in Compile := Seq ()
 unmanagedResources in Test <<= (scalaSource in Test) map { s => {
     (s ** (-"*.scala" && -HiddenFileFilter)).get
 }}
-
-// Documentation
-
-// Link the documentation to the source in the main repository
-
-// FIXME
-// scalacOptions in (Compile, doc) <++= baseDirectory map {
-//     bd => Seq (
-//         "-sourcepath",
-//             bd.getAbsolutePath,
-//         "-doc-source-url",
-//             "https://code.google.com/p/kiama/source/browse€{FILE_PATH}.scala"
-//     )
-// }
 
 // Publishing
 
