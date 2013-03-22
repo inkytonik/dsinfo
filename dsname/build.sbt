@@ -1,7 +1,3 @@
-// Main settings
-
-name := "dsname"
-
 // Specify how to find source and test files.  Main sources are
 //    - in src directory
 //    - all .scala files, except

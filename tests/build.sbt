@@ -1,7 +1,3 @@
-// Main settings
-
-name := "dsname-tests"
-
 // Dependencies
 
 libraryDependencies in ThisBuild ++= Seq (
