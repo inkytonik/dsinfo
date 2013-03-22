@@ -97,7 +97,7 @@ Most of the work is done by the `dsname` routine called `makeWithName`.
       import org.bitbucket.inkytonik.dsname.DSName.makeWithName
 
       def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
-        makeWithName (c) ("twoargs", "TwoArgsMaker", "mkTwoArgs", i, s)
+        makeWithName (c) (TwoArgsMaker", "mkTwoArgs")
 
     }
 
@@ -113,13 +113,9 @@ The body of `makeTwoArgsWithName` just has to call `makeWithName`.
 The macro context must be passed in the first argument list.
 The second argument list must contain the following items:
 
-* the name of the macro,
+* the name of the object from which the method we want to call comes, and
 
-* the name of the object from which the method we want to call comes,
-
-* the name of the method we want to call, and
-
-* the expressions that represent the arguments.  There can be any number of these.
+* the name of the method we want to call.
 
 `makeWithName` works as follows.
 It looks for a `val` or `def` whose definition is exactly macro invocation.

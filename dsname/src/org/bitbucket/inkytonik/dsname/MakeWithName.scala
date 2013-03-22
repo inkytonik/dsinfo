@@ -25,19 +25,20 @@ object DSName {
 
     import scala.reflect.macros.Context
 
-    def makeWithName[T] (c : Context) (macroName : String,
-                                       objectName : String,
-                                       funcName : String,
-                                       args : c.Expr[_]*) : c.Expr[T] = {
+    def makeWithName[T] (c : Context) (objectName : String, funcName : String) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
 
         /**
-         * A list of the trees of the expressions that were supplied as the
-         * macro arguments.
+         * The name and args of the macro.
          */
-        val macroArgs = (args map (_.tree)).toList
+        val Apply (Select (_, macroName), macroArgs) = c.macroApplication
+
+        /**
+         * The string of the macro name.
+         */
+        val macroNameStr = macroName.decoded
 
         /**
          * Is this tree this macro invocation?
@@ -70,7 +71,7 @@ object DSName {
          * return the name of the `val`, otherwise return the macro name.
          */
         def getValNameIn (body : List[c.Tree]) : String =
-            optFindValNameIn (body).getOrElse (macroName)
+            optFindValNameIn (body).getOrElse (macroNameStr)
 
         /**
          * Find the name of the definition for which this macro application is
@@ -94,7 +95,7 @@ object DSName {
                         case None if isThisInvocation (expr) =>
                             defname.decoded
                         case None =>
-                            macroName
+                            macroNameStr
                     }
 
                 // Not a def, look for a val in enclosing template bodies
