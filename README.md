@@ -44,7 +44,7 @@ Mercurial.
 
 Download and install the Scala simple build tool:
 
-    https://github.com/harrah/xsbt/wiki/
+    http://www.scala-sbt.org
 
 Run `sbt package` in the top-level of the project. sbt will download all the
 necessary Scala compiler and library jars, build the library, and package it
