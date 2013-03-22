@@ -27,7 +27,7 @@ object NoArgsMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import MakeWithName.makeWithName
+    import DSName.makeWithName
 
     def noargs () : NoArgs =
         macro makeNoArgWithName

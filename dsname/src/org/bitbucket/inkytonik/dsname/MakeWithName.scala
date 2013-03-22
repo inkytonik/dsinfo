@@ -21,7 +21,7 @@
 
 package org.bitbucket.inkytonik.dsname
 
-object MakeWithName {
+object DSName {
 
     import scala.reflect.macros.Context
 

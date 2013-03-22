@@ -29,7 +29,7 @@ object OneArgMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import MakeWithName.makeWithName
+    import DSName.makeWithName
 
     def onearg (a : Arg) : OneArg =
         macro makeOneArgWithName
