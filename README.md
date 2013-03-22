@@ -116,7 +116,8 @@ The second argument list must contain the following items:
 * the name of the method we want to call.
 
 `makeWithName` works as follows.
-It looks for a `val` or `def` whose definition is exactly macro invocation.
+It looks for a `val` or `def` whose definition is exactly the macro
+invocation.
 If such a definition is found, the name of the defined `val` or `def` is
 extracted.
 Otherwise, the name of the macro is used as the default name.
@@ -140,10 +141,10 @@ The library also works for values in classes and traits, plus for `def`
 definitions in all of these locations.
 
 Once `makeWithName` has a name for an invocation it replaces that
-invocation with a call of the method that was specified by its third
-and fourth arguments.
-It passes the name first and then all of the other original arguments
-to the macro invocation.
+invocation with a call of the method that was specified by its non-Context
+arguments.
+It passes the name first and then all of the other original arguments to
+the macro invocation.
 Thus, the code above is compiled as if you had written:
 
     object Foo {
