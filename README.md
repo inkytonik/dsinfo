@@ -97,7 +97,7 @@ Most of the work is done by the `dsname` routine called `makeWithName`.
       import org.bitbucket.inkytonik.dsname.DSName.makeWithName
 
       def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
-        makeWithName (c) (TwoArgsMaker", "mkTwoArgs")
+        makeWithName (c) ("TwoArgsMaker", "mkTwoArgs")
 
     }
 
