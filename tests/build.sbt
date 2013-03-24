@@ -1,11 +1,7 @@
-// Main settings
-
-name := "dsname-tests"
-
 // Interactive settings
 
 shellPrompt <<= (name, version) { (n, v) =>
-     _ => n + " " + v + "> "
+     _ => "dsname " + n + " " + v + "> "
 }
 
 // Dependencies

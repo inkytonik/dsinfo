@@ -1,11 +1,7 @@
-// Main settings
-
-name := "dsname-egs"
-
 // Interactive settings
 
 shellPrompt <<= (name, version) { (n, v) =>
-     _ => n + " " + v + "> "
+     _ => "dsname " + n + " " + v + "> "
 }
 
 // Specify how to find source and test files.  Main sources are

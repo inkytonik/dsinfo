@@ -26,7 +26,7 @@ object DsNameBuild extends Build {
 
     lazy val root =
         Project (
-            id = "dsname-root",
+            id = "root",
             base = file (".")
         ) aggregate (dsname, egs, tests)
 
@@ -38,13 +38,13 @@ object DsNameBuild extends Build {
 
     lazy val egs =
         Project (
-            id = "dsname-egs",
+            id = "egs",
             base = file ("egs")
         ) dependsOn (dsname)
 
     lazy val tests =
         Project (
-            id = "dsname-tests",
+            id = "tests",
             base = file ("tests")
         ) dependsOn (egs)
 
