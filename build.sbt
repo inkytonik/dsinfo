@@ -6,7 +6,7 @@ organization in ThisBuild := "org.bitbucket.inkytonik.dsname"
 
 // Scala compiler settings
 
-scalaVersion in ThisBuild := "2.10.0"
+scalaVersion in ThisBuild := "2.10.1"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked")
 
