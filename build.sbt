@@ -1,6 +1,6 @@
 // Main settings
 
-name := "dsname"
+name := "dsname-root"
 
 version in ThisBuild := "0.1.0-SNAPSHOT"
 
@@ -45,7 +45,7 @@ libraryDependencies in ThisBuild <++= scalaVersion {
 
 logLevel in ThisBuild := Level.Info
 
-shellPrompt in ThisBuild <<= (name, version) { (n, v) =>
+shellPrompt <<= (name, version) { (n, v) =>
      _ => n + " " + v + "> "
 }
 

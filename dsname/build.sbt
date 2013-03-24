@@ -1,3 +1,13 @@
+// Main settings
+
+name := "dsname"
+
+// Interactive settings
+
+shellPrompt <<= (name, version) { (n, v) =>
+     _ => n + " " + v + "> "
+}
+
 // Specify how to find source and test files.  Main sources are
 //    - in src directory
 //    - all .scala files, except
