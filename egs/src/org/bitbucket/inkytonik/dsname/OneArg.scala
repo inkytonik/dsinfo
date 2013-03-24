@@ -29,12 +29,12 @@ object OneArgMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import DSName.makeWithName
+    import DSName.makeCallWithName
 
     def onearg (a : Arg) : OneArg =
         macro makeOneArgWithName
 
     def makeOneArgWithName (c : Context) (a : c.Expr[Arg]) : c.Expr[OneArg] =
-        makeWithName (c) ("OneArg", "apply")
+        makeCallWithName (c) ("OneArg", "apply")
 
 }

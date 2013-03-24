@@ -27,13 +27,13 @@ object TwoArgsMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import DSName.makeWithName
+    import DSName.makeCallWithName
 
     def twoargs (i : Int, s : String) : TwoArgs =
         macro makeTwoArgsWithName
 
     def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
-        makeWithName (c) ("TwoArgsMaker", "mkTwoArgs")
+        makeCallWithName (c) ("TwoArgsMaker", "mkTwoArgs")
 
     def mkTwoArgs (name : String, i : Int, s : String) : TwoArgs =
         TwoArgs (name, i, s)

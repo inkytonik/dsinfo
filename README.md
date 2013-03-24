@@ -103,12 +103,12 @@ The method that is called can do anything it likes with the arguments as
 long as it returns the correct type.
 
 The macro implementation is provided by `makeTwoArgsWithName`.
-Most of the work is done by the dsname routine called `makeWithName`.
+Most of the work is done by the dsname routine called `makeCallWithName`.
 
       import org.bitbucket.inkytonik.dsname.DSName.makeWithName
 
       def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
-        makeWithName (c) ("TwoArgsMaker", "mkTwoArgs")
+        makeCallWithName (c) ("TwoArgsMaker", "mkTwoArgs")
 
     }
 
@@ -120,7 +120,7 @@ These are expressions that represent the values, not the actual values.
 The return type is an expression of the type of the value that we
 eventually want to return.
 
-The body of `makeTwoArgsWithName` just has to call `makeWithName`.
+The body of `makeTwoArgsWithName` just has to call `makeCallWithName`.
 The macro context must be passed in the first argument list.
 The second argument list must contain the following items:
 

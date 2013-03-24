@@ -27,13 +27,13 @@ object NoArgsMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import DSName.makeWithName
+    import DSName.makeCallWithName
 
     def noargs () : NoArgs =
         macro makeNoArgWithName
 
     def makeNoArgWithName (c : Context) () : c.Expr[NoArgs] =
-        makeWithName (c) ("NoArgsMaker", "mkNoArgs")
+        makeCallWithName (c) ("NoArgsMaker", "mkNoArgs")
 
     def mkNoArgs (name : String) : NoArgs =
         NoArgs (name)

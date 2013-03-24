@@ -25,7 +25,7 @@ object DSName {
 
     import scala.reflect.macros.Context
 
-    def makeWithName[T] (c : Context) (objectName : String, funcName : String) : c.Expr[T] = {
+    def makeCallWithName[T] (c : Context) (objectName : String, funcName : String) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
@@ -111,7 +111,7 @@ object DSName {
 
                         case tree =>
                             c.error (c.enclosingPosition,
-                                     s"makeWithName: unexpected context ${u.showRaw (tree)}")
+                                     s"makeCallWithName: unexpected context ${u.showRaw (tree)}")
                             "dummy"
 
                     }
