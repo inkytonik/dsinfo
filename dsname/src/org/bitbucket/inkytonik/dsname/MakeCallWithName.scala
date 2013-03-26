@@ -26,20 +26,12 @@ object DSName {
     import scala.reflect.macros.Context
 
     /**
-     * Make an AST fragment that calls the specified unqualified method with
-     * the name of the enclosing `val` or `def` and the original arguments
-     * to the macro call given by `c`.
-     */
-    def makeCallWithName[T] (c : Context, methodName : String) : c.Expr[T] =
-        makeCallWithName (c, "", methodName)
-
-    /**
      * Make an AST fragment that calls the specified method with the name of
      * the enclosing `val` or `def` and the original arguments to the macro
-     * call given by `c`. If `objectName` is empty just called the unqualified
-     * method, otherwise qualify it with `objectName`.
+     * call given by `c`. The name can unqualified or qualified with object
+     * or package names, or both.
      */
-    def makeCallWithName[T] (c : Context, objectName : String, methodName : String) : c.Expr[T] = {
+    def makeCallWithName[T] (c : Context, methodName : String) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
@@ -131,15 +123,30 @@ object DSName {
 
             }
 
-        // Make the method we want to call
-        val method =
-            if (objectName.isEmpty)
-                Ident (newTermName (methodName))
-            else
-                Select (Ident (newTermName (objectName)), newTermName (methodName))
+        // Build the method call
+        methodName.split ('.') match {
 
-        // Return call to specified method passing the name and the original args
-        c.Expr[T] (Apply (method, Literal (Constant (nameOfEnclosing)) :: macroArgs))
+            case Array () =>
+                c.error (c.enclosingPosition,
+                         s"makeCallWithName: illegal call with empty method name")
+                null
+
+            case components =>
+
+                // Make the AST for the method reference
+                val head : c.Tree = Ident (newTermName (components.head))
+                val method =
+                    components.tail.foldLeft (head) {
+                        case (t, s) => Select (t, newTermName (s))
+                    }
+
+                // println (s"method = ${u.show (method)}")
+                // println (s"method = ${u.showRaw (method)}")
+
+                // Return call to specified method passing the name and the original args
+                c.Expr[T] (Apply (method, Literal (Constant (nameOfEnclosing)) :: macroArgs))
+
+        }
 
     }
 
