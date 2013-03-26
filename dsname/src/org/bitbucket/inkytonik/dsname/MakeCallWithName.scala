@@ -25,7 +25,21 @@ object DSName {
 
     import scala.reflect.macros.Context
 
-    def makeCallWithName[T] (c : Context) (objectName : String, funcName : String) : c.Expr[T] = {
+    /**
+     * Make an AST fragment that calls the specified unqualified method with
+     * the name of the enclosing `val` or `def` and the original arguments
+     * to the macro call given by `c`.
+     */
+    def makeCallWithName[T] (c : Context, methodName : String) : c.Expr[T] =
+        makeCallWithName (c, "", methodName)
+
+    /**
+     * Make an AST fragment that calls the specified method with the name of
+     * the enclosing `val` or `def` and the original arguments to the macro
+     * call given by `c`. If `objectName` is empty just called the unqualified
+     * method, otherwise qualify it with `objectName`.
+     */
+    def makeCallWithName[T] (c : Context, objectName : String, methodName : String) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
@@ -74,11 +88,10 @@ object DSName {
             optFindValNameIn (body).getOrElse (macroNameStr)
 
         /**
-         * Find the name of the definition for which this macro application is
-         * the right-hand side, or `None` if we can't find one.
-         * FIXME: other case: top-level of template
+         * Find the name of the entity for which this macro application is
+         * the right-hand side, or the macro name if one can't be found.
          */
-        def enclosingDefName : String =
+        def nameOfEnclosing : String =
             c.enclosingMethod match {
 
                 // Body of def is the macro invocation
@@ -118,10 +131,15 @@ object DSName {
 
             }
 
+        // Make the method we want to call
+        val method =
+            if (objectName.isEmpty)
+                Ident (newTermName (methodName))
+            else
+                Select (Ident (newTermName (objectName)), newTermName (methodName))
+
         // Return call to specified method passing the name and the original args
-        c.Expr[T] (Apply (Select (Ident (newTermName (objectName)),
-                                  newTermName (funcName)),
-                          Literal (Constant (enclosingDefName)) :: macroArgs))
+        c.Expr[T] (Apply (method, Literal (Constant (nameOfEnclosing)) :: macroArgs))
 
     }
 

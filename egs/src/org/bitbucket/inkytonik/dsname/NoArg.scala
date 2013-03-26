@@ -33,9 +33,6 @@ object NoArgsMaker {
         macro makeNoArgWithName
 
     def makeNoArgWithName (c : Context) () : c.Expr[NoArgs] =
-        makeCallWithName (c) ("NoArgsMaker", "mkNoArgs")
-
-    def mkNoArgs (name : String) : NoArgs =
-        NoArgs (name)
+        makeCallWithName (c, "mkNoArgs")
 
 }

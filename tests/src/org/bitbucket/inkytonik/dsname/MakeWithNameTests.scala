@@ -29,6 +29,13 @@ class MakeWithNameTests extends FunSuite {
     import OneArgMaker.onearg
     import TwoArgsMaker.twoargs
 
+    /**
+     * Builder for `NoArgs`. It's here to test building from a local method
+     * using the version from this class.
+     */
+    def mkNoArgs (name : String) : NoArgs =
+        NoArgs (name)
+
     // No argument tests (val)
 
     val valnoargs1 = noargs ()
