@@ -108,7 +108,7 @@ Most of the work is done by the dsname routine called `makeCallWithName`.
       import org.bitbucket.inkytonik.dsname.DSName.makeCallWithName
 
       def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
-        makeCallWithName (c, "TwoArgsMaker", "mkTwoArgs")
+        makeCallWithName (c, "TwoArgsMaker.mkTwoArgs")
 
     }
 
@@ -122,18 +122,12 @@ eventually want to return.
 
 The body of `makeTwoArgsWithName` just has to call `makeCallWithName`.
 The macro context is passed as the first argument.
-The other two arguments are:
+The other arguments is the name of the method we want to call.
 
-* the name of the object from which the method we want to call comes, and
+What does `makeCallWithName` do?
+================================
 
-* the name of the method we want to call.
-
-(`makeCallWithName` has an overloaded variant that takes the context and
-just one string.
-In this case, the string is the method name and an unqualified call is
-constructed.)
-
-`makeCallWithName` works as follows.
+`makeCallWithName` operates as follows.
 It looks for a `val` or `def` whose definition is exactly the macro
 invocation.
 If such a definition is found, the name of the defined `val` or `def` is
@@ -175,3 +169,27 @@ Thus, the code above is compiled as if you had written:
 
 Thus, the method `mkTwoArgs` can use the Scala names but the user does not
 write anything more than a normal Scala `val` or `def` definition.
+
+Method name variants
+====================
+
+The method name argument to `makeCallWithName` can specify the method to
+call in a variety of ways.
+
+As shown in the example above, if the method name is qualified then the
+method that is called comes the specified object and/or package.
+
+If the method name is unqualified then the method must exist in the scope
+of the call of the macro.
+E.g., using the name `"mkTwoArgs"` assumes that this method is in the
+user's scope and generates a call to it.
+
+Finally, as a special case, if the name is qualified and starts with a
+`"this"` component then the call that is generated will be a call of a
+method on the object on which the original macro call was made.
+E.g., if the name is `"this.mkTwoARgs"` and the macro call is
+`myObj.twoargs (1, "one")` then the call that is generated is
+`myObj.mkTwoArgs ("name", 1, "one")` where `"name"` is the definition name.
+
+
+
