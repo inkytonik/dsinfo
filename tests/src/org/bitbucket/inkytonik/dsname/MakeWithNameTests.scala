@@ -342,4 +342,27 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("six", "embedded def value s") (deftwoargs6.get.s)
     }
 
+    // Test of methods as macros
+
+    val namedInt1 = NamedInt ("one", 1)
+
+    test ("normal NamedInt is correctly built") {
+        expectResult (1, "NamedInt i") (namedInt1.i)
+        expectResult ("one", "NamedInt name") (namedInt1.name)
+    }
+
+    val namedInt2 = NamedInt ("two", 2).increment (4)
+
+    test ("incremented NamedInt is correctly built") {
+        expectResult (6, "NamedInt i") (namedInt2.i)
+        expectResult ("namedInt2", "NamedInt name") (namedInt2.name)
+    }
+
+    val namedInt3 = NamedInt ("three", 3).increment (4).increment (5)
+
+    test ("a doubly incremented NamedInt is correctly built") {
+        expectResult (12, "NamedInt i") (namedInt3.i)
+        expectResult ("namedInt3", "NamedInt name") (namedInt3.name)
+    }
+
 }
