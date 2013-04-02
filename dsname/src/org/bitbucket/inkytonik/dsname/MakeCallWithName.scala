@@ -40,6 +40,8 @@ object DSName {
         import c.{universe => u}
         import u._
 
+        import scala.reflect.NameTransformer.encode
+
         /**
          * Helper function to do the real work once the macro name and arguments
          * have been determined. `obj` is the object to which the macro was
@@ -150,10 +152,10 @@ object DSName {
                         if (components.head == "this")
                             obj
                         else
-                            Ident (newTermName (components.head))
+                            Ident (newTermName (encode (components.head)))
                     val method =
                         components.tail.foldLeft (head) {
-                            case (t, s) => Select (t, newTermName (s))
+                            case (t, s) => Select (t, newTermName (encode (s)))
                         }
 
                     // println (s"method = ${u.show (method)}")
