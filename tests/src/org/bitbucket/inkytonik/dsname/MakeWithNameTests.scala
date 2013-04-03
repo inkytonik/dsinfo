@@ -28,6 +28,7 @@ class MakeWithNameTests extends FunSuite {
     import NoArgsMaker.noargs
     import OneArgMaker.onearg
     import TwoArgsMaker.twoargs
+    import ThreeArgsMaker.threeargs
 
     /**
      * Builder for `NoArgs`. It's here to test building from a local method
@@ -75,6 +76,47 @@ class MakeWithNameTests extends FunSuite {
 
     test ("an embedded NoArgs val is correctly built") {
         expectResult ("noargs", "embedded val value name") (valnoargs5.get.name)
+    }
+
+    // No argument tests (lazy val)
+
+    lazy val lazyvalnoargs1 = noargs ()
+
+    test ("a class level NoArgs lazy val is correctly built") {
+        expectResult ("lazyvalnoargs1", "class level lazy val vallazyue name") (lazyvalnoargs1.name)
+    }
+
+    def lazyvalNoArgsMethod : NoArgs = {
+        lazy val lazyvalnoargs2 = noargs ()
+        lazyvalnoargs2
+    }
+
+    test ("a method level NoArgs lazy val is correctly built") {
+        expectResult ("lazyvalnoargs2", "method level lazy val value name") (lazyvalNoArgsMethod.name)
+    }
+
+    object lazyvalNoArgsObject {
+        lazy val lazyvalnoargs3 = noargs ()
+    }
+
+    test ("an object level NoArgs lazy val is correctly built") {
+        expectResult ("lazyvalnoargs3", "object level lazy val value name") (lazyvalNoArgsObject.lazyvalnoargs3.name)
+    }
+
+    trait lazyvalNoArgsTrait {
+        lazy val lazyvalnoargs4 = noargs ()
+    }
+
+    object lazyvalAnotherNoArgsObject extends lazyvalNoArgsTrait
+
+    test ("a trait level NoArgs lazy val is correctly built") {
+        expectResult ("lazyvalnoargs4", "trait level lazy val value name") (lazyvalAnotherNoArgsObject.lazyvalnoargs4.name)
+    }
+
+    lazy val lazyvalnoargs5 = Some (noargs ())
+
+    test ("an embedded NoArgs lazy val is correctly built") {
+        expectResult ("noargs", "embedded lazy val value name") (lazyvalnoargs5.get.name)
     }
 
     // No argument tests (def)
@@ -142,7 +184,7 @@ class MakeWithNameTests extends FunSuite {
     }
 
     test ("a method level OneArg val is correctly built") {
-        expectResult ("valonearg2", "method level value name") (valOneArgMethod.name)
+        expectResult ("valonearg2", "method level val value name") (valOneArgMethod.name)
         expectResult (Arg (2), "method level val value a") (valOneArgMethod.a)
     }
 
@@ -173,7 +215,53 @@ class MakeWithNameTests extends FunSuite {
         expectResult (Arg (5), "embedded value val a") (valonearg5.get.a)
     }
 
-    // One argument tests (val)
+    // One argument tests (lazy val)
+
+    lazy val lazyvalonearg1 = onearg (Arg (1))
+
+    test ("a class level OneArg lazy val is correctly built") {
+        expectResult ("lazyvalonearg1", "class level lazy val value name") (lazyvalonearg1.name)
+        expectResult (Arg (1), "class level lazy val value a") (lazyvalonearg1.a)
+    }
+
+    def lazyvalOneArgMethod : OneArg = {
+        lazy val lazyvalonearg2 = onearg (Arg (2))
+        lazyvalonearg2
+    }
+
+    test ("a method level OneArg lazy val is correctly built") {
+        expectResult ("lazyvalonearg2", "method level lazy val value name") (lazyvalOneArgMethod.name)
+        expectResult (Arg (2), "method level val value a") (lazyvalOneArgMethod.a)
+    }
+
+    object lazyvalOneArgObject {
+        lazy val lazyvalonearg3 = onearg (Arg (3))
+    }
+
+    test ("an object level OneArg lazy val is correctly built") {
+        expectResult ("lazyvalonearg3", "object level lazy val value name") (lazyvalOneArgObject.lazyvalonearg3.name)
+        expectResult (Arg (3), "object level lazy val value a") (lazyvalOneArgObject.lazyvalonearg3.a)
+    }
+
+    trait lazyvalOneArgTrait {
+        val lazyvalonearg4 = onearg (Arg (4))
+    }
+
+    object lazyvalAnotherOneArgObject extends lazyvalOneArgTrait
+
+    test ("a trait level OneArg lazy val is correctly built") {
+        expectResult ("lazyvalonearg4", "trait level lazy val value name") (lazyvalAnotherOneArgObject.lazyvalonearg4.name)
+        expectResult (Arg (4), "trait level lazy val value a") (lazyvalAnotherOneArgObject.lazyvalonearg4.a)
+    }
+
+    val lazyvalonearg5 = Some (onearg (Arg (5)))
+
+    test ("an embedded OneArg lazy val is correctly built") {
+        expectResult ("onearg", "embedded value lazy val name") (lazyvalonearg5.get.name)
+        expectResult (Arg (5), "embedded value lazy val a") (lazyvalonearg5.get.a)
+    }
+
+    // One argument tests (def)
 
     def defonearg1 = onearg (Arg (1))
 
@@ -234,7 +322,7 @@ class MakeWithNameTests extends FunSuite {
     val valtwoargs1 = twoargs (1, "one")
 
     test ("a class level TwoArgs val is correctly built") {
-        expectResult ("valtwoargs1", "class level value val name") (valtwoargs1.name)
+        expectResult ("valtwoargs1", "class level val value name") (valtwoargs1.name)
         expectResult (1, "class level val value i") (valtwoargs1.i)
         expectResult ("one", "class level val value s") (valtwoargs1.s)
     }
@@ -278,6 +366,57 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("twoargs", "embedded val value name") (valtwoargs5.get.name)
         expectResult (5, "embedded val value i") (valtwoargs5.get.i)
         expectResult ("five", "embedded val value s") (valtwoargs5.get.s)
+    }
+
+    // Two argument tests (lazy val)
+
+    lazy val lazyvaltwoargs1 = twoargs (1, "one")
+
+    test ("a class level TwoArgs lazy val is correctly built") {
+        expectResult ("lazyvaltwoargs1", "class level lazy val value name") (lazyvaltwoargs1.name)
+        expectResult (1, "class level lazy val value i") (lazyvaltwoargs1.i)
+        expectResult ("one", "class level lazy val value s") (lazyvaltwoargs1.s)
+    }
+
+    def lazyvalTwoArgsMethod : TwoArgs = {
+        lazy val lazyvaltwoargs2 = twoargs (2, "two")
+        lazyvaltwoargs2
+    }
+
+    test ("a twoArgsMethod level TwoArgs lazy val is correctly built") {
+        expectResult ("lazyvaltwoargs2", "twoArgsMethod level lazy val value name") (lazyvalTwoArgsMethod.name)
+        expectResult (2, "twoArgsMethod level lazy val value i") (lazyvalTwoArgsMethod.i)
+        expectResult ("two", "twoArgsMethod level lazy val value s") (lazyvalTwoArgsMethod.s)
+    }
+
+    object lazyvalTwoArgsObject {
+        lazy val lazyvaltwoargs3 = twoargs (3, "three")
+    }
+
+    test ("an object level TwoArgs lazy val is correctly built") {
+        expectResult ("lazyvaltwoargs3", "object level lazy val value name") (lazyvalTwoArgsObject.lazyvaltwoargs3.name)
+        expectResult (3, "object level lazy val value i") (lazyvalTwoArgsObject.lazyvaltwoargs3.i)
+        expectResult ("three", "object level lazy val value s") (lazyvalTwoArgsObject.lazyvaltwoargs3.s)
+    }
+
+    trait lazyvalTwoArgsTrait {
+        lazy val lazyvaltwoargs4 = twoargs (4, "four")
+    }
+
+    object lazyvalAnotherTwoArgsObject extends lazyvalTwoArgsTrait
+
+    test ("a trait level TwoArgs lazy val is correctly built") {
+        expectResult ("lazyvaltwoargs4", "trait level lazy val value name") (lazyvalAnotherTwoArgsObject.lazyvaltwoargs4.name)
+        expectResult (4, "trait level lazy val value i") (lazyvalAnotherTwoArgsObject.lazyvaltwoargs4.i)
+        expectResult ("four", "trait level lazy val value s") (lazyvalAnotherTwoArgsObject.lazyvaltwoargs4.s)
+    }
+
+    lazy val lazyvaltwoargs5 = Some (twoargs (5, "five"))
+
+    test ("an embedded TwoArgs lazy val is correctly built") {
+        expectResult ("twoargs", "embedded lazy val value name") (lazyvaltwoargs5.get.name)
+        expectResult (5, "embedded lazy val value i") (lazyvaltwoargs5.get.i)
+        expectResult ("five", "embedded lazy val value s") (lazyvaltwoargs5.get.s)
     }
 
     // Two argument tests (def)
@@ -340,6 +479,186 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("twoargs", "embedded def value name") (deftwoargs6.get.name)
         expectResult (6, "embedded def value i") (deftwoargs6.get.i)
         expectResult ("six", "embedded def value s") (deftwoargs6.get.s)
+    }
+
+    // Three argument tests (val)
+
+    val valthreeargs1 = threeargs (1) (true, "one")
+
+    test ("a class level ThreeArgs val is correctly built") {
+        expectResult ("valthreeargs1", "class level val value name") (valthreeargs1.name)
+        expectResult (1, "class level val value i") (valthreeargs1.i)
+        expectResult (true, "class level val value b") (valthreeargs1.b)
+        expectResult ("one", "class level val value s") (valthreeargs1.s)
+    }
+
+    def valThreeArgsMethod : ThreeArgs = {
+        val valthreeargs2 = threeargs (2) (false, "two")
+        valthreeargs2
+    }
+
+    test ("a threeArgsMethod level ThreeArgs val is correctly built") {
+        expectResult ("valthreeargs2", "threeArgsMethod level val value name") (valThreeArgsMethod.name)
+        expectResult (2, "threeArgsMethod level val value i") (valThreeArgsMethod.i)
+        expectResult (false, "threeArgsMethod level val value b") (valThreeArgsMethod.b)
+        expectResult ("two", "threeArgsMethod level val value s") (valThreeArgsMethod.s)
+    }
+
+    object valThreeArgsObject {
+        val valthreeargs3 = threeargs (3) (true, "three")
+    }
+
+    test ("an object level ThreeArgs val is correctly built") {
+        expectResult ("valthreeargs3", "object level val value name") (valThreeArgsObject.valthreeargs3.name)
+        expectResult (3, "object level val value i") (valThreeArgsObject.valthreeargs3.i)
+        expectResult (true, "object level val value b") (valThreeArgsObject.valthreeargs3.b)
+        expectResult ("three", "object level val value s") (valThreeArgsObject.valthreeargs3.s)
+    }
+
+    trait valThreeArgsTrait {
+        val valthreeargs4 = threeargs (4) (false, "four")
+    }
+
+    object valAnotherThreeArgsObject extends valThreeArgsTrait
+
+    test ("a trait level ThreeArgs val is correctly built") {
+        expectResult ("valthreeargs4", "trait level val value name") (valAnotherThreeArgsObject.valthreeargs4.name)
+        expectResult (4, "trait level val value i") (valAnotherThreeArgsObject.valthreeargs4.i)
+        expectResult (false, "trait level val value b") (valAnotherThreeArgsObject.valthreeargs4.b)
+        expectResult ("four", "trait level val value s") (valAnotherThreeArgsObject.valthreeargs4.s)
+    }
+
+    val valthreeargs5 = Some (threeargs (5) (true, "five"))
+
+    test ("an embedded ThreeArgs val is correctly built") {
+        expectResult ("threeargs", "embedded val value name") (valthreeargs5.get.name)
+        expectResult (5, "embedded val value i") (valthreeargs5.get.i)
+        expectResult (true, "embedded val value b") (valthreeargs5.get.b)
+        expectResult ("five", "embedded val value s") (valthreeargs5.get.s)
+    }
+
+    // Three argument tests (lazy val)
+
+    lazy val lazyvalthreeargs1 = threeargs (1) (true, "one")
+
+    test ("a class level ThreeArgs lazy val is correctly built") {
+        expectResult ("lazyvalthreeargs1", "class level val value name") (lazyvalthreeargs1.name)
+        expectResult (1, "class level lazy val value i") (lazyvalthreeargs1.i)
+        expectResult (true, "class level lazy val value b") (lazyvalthreeargs1.b)
+        expectResult ("one", "class level lazy val value s") (lazyvalthreeargs1.s)
+    }
+
+    def lazyvalThreeArgsMethod : ThreeArgs = {
+        lazy val lazyvalthreeargs2 = threeargs (2) (false, "two")
+        lazyvalthreeargs2
+    }
+
+    test ("a threeArgsMethod level ThreeArgs lazy val is correctly built") {
+        expectResult ("lazyvalthreeargs2", "threeArgsMethod level lazy val value name") (lazyvalThreeArgsMethod.name)
+        expectResult (2, "threeArgsMethod level lazy val value i") (lazyvalThreeArgsMethod.i)
+        expectResult (false, "threeArgsMethod level lazy val value b") (lazyvalThreeArgsMethod.b)
+        expectResult ("two", "threeArgsMethod level lazy val value s") (lazyvalThreeArgsMethod.s)
+    }
+
+    object lazyvalThreeArgsObject {
+        lazy val lazyvalthreeargs3 = threeargs (3) (true, "three")
+    }
+
+    test ("an object level ThreeArgs lazy val is correctly built") {
+        expectResult ("lazyvalthreeargs3", "object level lazy val value name") (lazyvalThreeArgsObject.lazyvalthreeargs3.name)
+        expectResult (3, "object level lazy val value i") (lazyvalThreeArgsObject.lazyvalthreeargs3.i)
+        expectResult (true, "object level lazy val value b") (lazyvalThreeArgsObject.lazyvalthreeargs3.b)
+        expectResult ("three", "object level lazy val value s") (lazyvalThreeArgsObject.lazyvalthreeargs3.s)
+    }
+
+    trait lazyvalThreeArgsTrait {
+        lazy val lazyvalthreeargs4 = threeargs (4) (false, "four")
+    }
+
+    object lazyvalAnotherThreeArgsObject extends lazyvalThreeArgsTrait
+
+    test ("a trait level ThreeArgs lazy val is correctly built") {
+        expectResult ("lazyvalthreeargs4", "trait level lazy val value name") (lazyvalAnotherThreeArgsObject.lazyvalthreeargs4.name)
+        expectResult (4, "trait level lazy val value i") (lazyvalAnotherThreeArgsObject.lazyvalthreeargs4.i)
+        expectResult (false, "trait level lazy val value b") (lazyvalAnotherThreeArgsObject.lazyvalthreeargs4.b)
+        expectResult ("four", "trait level lazy val value s") (lazyvalAnotherThreeArgsObject.lazyvalthreeargs4.s)
+    }
+
+    lazy val lazyvalthreeargs5 = Some (threeargs (5) (true, "five"))
+
+    test ("an embedded ThreeArgs lazy val is correctly built") {
+        expectResult ("threeargs", "embedded lazy val value name") (lazyvalthreeargs5.get.name)
+        expectResult (5, "embedded lazy val value i") (lazyvalthreeargs5.get.i)
+        expectResult (true, "embedded lazy val value b") (lazyvalthreeargs5.get.b)
+        expectResult ("five", "embedded lazy val value s") (lazyvalthreeargs5.get.s)
+    }
+
+    // Three argument tests (def)
+
+    def defthreeargs1 = threeargs (1) (false, "one")
+
+    test ("a class level ThreeArgs def (apply) is correctly built") {
+        expectResult ("defthreeargs1", "class level def (apply) value name") (defthreeargs1.name)
+        expectResult (1, "class level def (apply) value i") (defthreeargs1.i)
+        expectResult (false, "class level def (apply) value b") (defthreeargs1.b)
+        expectResult ("one", "class level def (apply) value s") (defthreeargs1.s)
+    }
+
+    def defthreeargs2 = {
+        val i = 0
+        threeargs (2) (true, "two")
+    }
+
+    test ("a class level ThreeArgs def (body) is correctly built") {
+        expectResult ("defthreeargs2", "class level def (body) value name") (defthreeargs2.name)
+        expectResult (2, "class level def (body) value i") (defthreeargs2.i)
+        expectResult (true, "class level def (body) value b") (defthreeargs2.b)
+        expectResult ("two", "class level def (body) value s") (defthreeargs2.s)
+    }
+
+    def defThreeArgsMethod : ThreeArgs = {
+        def defthreeargs3 = threeargs (3) (false, "three")
+        defthreeargs3
+    }
+
+    test ("a method level ThreeArgs def is correctly built") {
+        expectResult ("defthreeargs3", "method level def value name") (defThreeArgsMethod.name)
+        expectResult (3, "method level def value i") (defThreeArgsMethod.i)
+        expectResult (false, "method level def value b") (defThreeArgsMethod.b)
+        expectResult ("three", "method level def value s") (defThreeArgsMethod.s)
+    }
+
+    object defThreeArgsObject {
+        def defthreeargs4 = threeargs (4) (true, "four")
+    }
+
+    test ("an object level ThreeArgs def is correctly built") {
+        expectResult ("defthreeargs4", "object level def value name") (defThreeArgsObject.defthreeargs4.name)
+        expectResult (4, "object level def value i") (defThreeArgsObject.defthreeargs4.i)
+        expectResult (true, "object level def value b") (defThreeArgsObject.defthreeargs4.b)
+        expectResult ("four", "object level def value s") (defThreeArgsObject.defthreeargs4.s)
+    }
+
+    trait defThreeArgsTrait {
+        def defthreeargs5 = threeargs (5) (false, "five")
+    }
+
+    object defAnotherThreeArgsObject extends defThreeArgsTrait
+
+    test ("a trait level ThreeArgs def is correctly built") {
+        expectResult ("defthreeargs5", "trait level def value name") (defAnotherThreeArgsObject.defthreeargs5.name)
+        expectResult (5, "trait level def value i") (defAnotherThreeArgsObject.defthreeargs5.i)
+        expectResult (false, "trait level def value b") (defAnotherThreeArgsObject.defthreeargs5.b)
+        expectResult ("five", "trait level def value s") (defAnotherThreeArgsObject.defthreeargs5.s)
+    }
+
+    def defthreeargs6 = Some (threeargs (6) (true, "six"))
+
+    test ("an embedded ThreeArgs def is correctly built") {
+        expectResult ("threeargs", "embedded def value name") (defthreeargs6.get.name)
+        expectResult (6, "embedded def value i") (defthreeargs6.get.i)
+        expectResult (true, "embedded def value b") (defthreeargs6.get.b)
+        expectResult ("six", "embedded def value s") (defthreeargs6.get.s)
     }
 
     // Test of methods as macros

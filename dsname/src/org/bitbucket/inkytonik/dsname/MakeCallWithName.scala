@@ -45,9 +45,13 @@ object DSName {
         /**
          * Helper function to do the real work once the macro name and arguments
          * have been determined. `obj` is the object to which the macro was
-         * applied.
+         * applied. `macroArgs` is a list of the argument lists that were supplied
+         * to the macro call. `args` is the first argument list; the name is
+         * pre-pended to this list. `argsn` is the other argument lists. They are
+         * passed unchanged.
          */
-        def constructCall[T] (obj : c.Tree, macroName : Name, macroArgs : List[c.Tree]) : c.Expr[T] = {
+        def constructCall[T] (obj : c.Tree, macroName : Name, args1 : List[c.Tree],
+                              argsn : List[List[c.Tree]]) : c.Expr[T] = {
 
             /**
              * The string of the macro name.
@@ -134,8 +138,19 @@ object DSName {
             /**
              * Make the call, gvien a tree for the method.
              */
-            def makeCall[T] (method : c.Tree) : c.Expr[T] =
-                c.Expr[T] (Apply (method, Literal (Constant (nameOfEnclosing)) :: macroArgs))
+            def makeCall[T] (method : c.Tree) : c.Expr[T] = {
+
+                // The base expression: the method applied to the first argument list
+                // with the name pre-pended
+                val base = Apply (method, Literal (Constant (nameOfEnclosing)) :: args1)
+
+                // Wrap the base in as many applications as are needed to pass the
+                // other argument lists (if any)
+                c.Expr[T] (argsn.foldLeft (base) {
+                               case (t, a) => Apply (t, a)
+                           })
+
+            }
 
             // Build the method call
             methodName.split ('.') match {
@@ -175,14 +190,25 @@ object DSName {
 
         c.macroApplication match {
 
+            // No arguments
             case Select (obj, macroName) =>
-                constructCall (obj, macroName, Nil)
+                constructCall (obj, macroName, Nil, Nil)
 
-            case Apply (Select (obj, macroName), macroArgs) =>
-                constructCall (obj, macroName, macroArgs)
+            // One argument list
+            case Apply (Select (obj, macroName), args) =>
+                constructCall (obj, macroName, args, Nil)
 
-            case Apply (TypeApply (Select (obj, macroName), _), macroArgs) =>
-                constructCall (obj, macroName, macroArgs)
+            // Two argument lists
+            case Apply (Apply (Select (obj, macroName), args1), args2) =>
+                constructCall (obj, macroName, args1, List (args2))
+
+            // One argument list + type application
+            case Apply (TypeApply (Select (obj, macroName), _), args1) =>
+                constructCall (obj, macroName, args1, Nil)
+
+            // Two arguments list + type application
+            case Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2) =>
+                constructCall (obj, macroName, args1, List (args2))
 
             case t =>
                 c.error (c.enclosingPosition,
