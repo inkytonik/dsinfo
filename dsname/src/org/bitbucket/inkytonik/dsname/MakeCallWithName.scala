@@ -98,7 +98,15 @@ object DSName {
             def nameOfEnclosing : String =
                 c.enclosingMethod match {
 
-                    // Body of def is the macro invocation
+                    // Macro invocation lies inside a definition of a lazy val of the form
+                    //   lazy def foo : ... = {
+                    //      foo$lzy = <macro invocation>
+                    //      foo$lzy
+                    //   }
+                    case d @ DefDef (_, defname, _, _, _, Block (List (Assign (_, exp)), _)) if isThisInvocation (exp) =>
+                        defname.decoded
+
+                    // Body of def is the macro invocation (non lazy)
                     case d @ DefDef (_, defname, _, _, _, body) if isThisInvocation (body) =>
                         defname.decoded
 
@@ -112,6 +120,8 @@ object DSName {
                             case None if isThisInvocation (expr) =>
                                 defname.decoded
                             case None =>
+                                // println (s"c.enclosingMethod = ${c.enclosingMethod}")
+                                // println (s"c.enclosingMethod = ${u.showRaw (c.enclosingMethod)}")
                                 macroNameStr
                         }
 
@@ -173,7 +183,7 @@ object DSName {
                             case (t, s) => Select (t, newTermName (encode (s)))
                         }
 
-                    // println (s"method = ${u.show (method)}")
+                    // println (s"method = $method")
                     // println (s"method = ${u.showRaw (method)}")
 
                     makeCall (method)
@@ -182,7 +192,7 @@ object DSName {
 
         }
 
-        // println (s"c.macroApplication = ${u.show (c.macroApplication)}")
+        // println (s"c.macroApplication = $c.macroApplication")
         // println (s"c.macroApplication = ${u.showRaw (c.macroApplication)}")
 
         // Extract macro name and arguments from the application and then
