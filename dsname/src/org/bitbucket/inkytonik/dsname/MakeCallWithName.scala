@@ -26,16 +26,25 @@ object DSName {
     import scala.reflect.macros.Context
 
     /**
+     * As for `makeCallWithName` with the optional method specifier, but the method
+     * specifier must be provided.
+     */
+    def makeCallWithName[T] (c : Context, methodSpec : String) : c.Expr[T] =
+        makeCallWithName (c, Some (methodSpec))
+
+    /**
      * Make an AST fragment that calls the specified method with the name of
      * the enclosing `val` or `def` and the original arguments to the macro
-     * call given by `c`. The name can unqualified or qualified with object
-     * or package names, or both. If the first component of the name is
-     * `this` then the generated call will be on the same object as the
-     * macro call. Otherwise, the name refers to a specific method either
-     * in scope at the macro application (unqualified) or selected from
-     * another module or package (qualified).
+     * call given by `c`. The method specifier is optional. If it's `None`, which
+     * is the default, then the macro name is used as the method specifier. If the
+     * method specifier is specified, it can specify an unqualified method name or
+     * a qualified method name with object or package names, or both. If the first
+     * component of the method specifier is `this` then the generated call will be
+     * on the same object as the macro call. Otherwise, the method specifier refers
+     * to a specific method either in scope at the macro application (unqualified)
+     * or selected from another module or package (qualified).
      */
-    def makeCallWithName[T] (c : Context, methodName : String) : c.Expr[T] = {
+    def makeCallWithName[T] (c : Context, optMethodSpec : Option[String] = None) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
@@ -162,8 +171,11 @@ object DSName {
 
             }
 
+            // Default the method name to the macro name
+            val methodSpec : String = optMethodSpec.getOrElse (macroName.decoded)
+
             // Build the method call
-            methodName.split ('.') match {
+            methodSpec.split ('.') match {
 
                 case Array () =>
                     c.error (c.enclosingPosition,

@@ -33,9 +33,9 @@ object ThreeArgsMaker {
         macro makeThreeArgsWithName
 
     def makeThreeArgsWithName (c : Context) (i : c.Expr[Int]) (b : c.Expr[Boolean], s : c.Expr[String]) : c.Expr[ThreeArgs] =
-        makeCallWithName (c, "ThreeArgsMaker.mkThreeArgs")
+        makeCallWithName (c)
 
-    def mkThreeArgs (name : String, i : Int) (b : Boolean, s : String) : ThreeArgs =
+    def threeargs (name : String, i : Int) (b : Boolean, s : String) : ThreeArgs =
         ThreeArgs (name, i, b, s)
 
 }
