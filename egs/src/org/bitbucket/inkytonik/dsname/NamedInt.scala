@@ -28,17 +28,30 @@ case class NamedInt (name : String, i : Int) {
     def increment (n : Int) : NamedInt =
         macro NamedIntMaker.incrementMacro
 
-    def mkIncrement (name : String, n : Int) : NamedInt =
+    def increment (name : String, n : Int) : NamedInt =
         NamedInt (name, i + n)
+
+    def decrement (n : Int) : NamedInt =
+        macro NamedIntMaker.decrementMacro
+
+    def decrement (name : String, n : Int) : NamedInt =
+        NamedInt (name, i - n)
 
 }
 
 object NamedIntMaker {
 
     import scala.reflect.macros.Context
-    import DSName.makeCallWithName
+    import DSName.{makeCallWithName, makeThisCallWithName}
+
+    // Use explicit "this" method spec
 
     def incrementMacro (c : Context) (n : c.Expr[Int]) : c.Expr[NamedInt] =
-        makeCallWithName (c, "this.mkIncrement")
+        makeCallWithName (c, "this.increment")
+
+    // Use implicit "this" method spec
+
+    def decrementMacro (c : Context) (n : c.Expr[Int]) : c.Expr[NamedInt] =
+        makeThisCallWithName (c)
 
 }

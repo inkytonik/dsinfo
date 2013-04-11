@@ -26,25 +26,35 @@ object DSName {
     import scala.reflect.macros.Context
 
     /**
-     * As for `makeCallWithName` with the optional method specifier, but the method
-     * specifier must be provided.
+     * The pattern that will be replaced by the macro name (`"\$macro"`).
      */
-    def makeCallWithName[T] (c : Context, methodSpec : String) : c.Expr[T] =
-        makeCallWithName (c, Some (methodSpec))
+    val macroNamePat = "$macro"
+
+    /**
+     * As for `makeCallWithName`, but uses the method specifier "this." followed
+     * by `macroNamePat`.
+     */
+    def makeThisCallWithName[T] (c : Context) : c.Expr[T] =
+        makeCallWithName (c, s"this.$macroNamePat")
 
     /**
      * Make an AST fragment that calls the specified method with the name of
      * the enclosing `val` or `def` and the original arguments to the macro
-     * call given by `c`. The method specifier is optional. If it's `None`, which
-     * is the default, then the macro name is used as the method specifier. If the
-     * method specifier is specified, it can specify an unqualified method name or
-     * a qualified method name with object or package names, or both. If the first
-     * component of the method specifier is `this` then the generated call will be
-     * on the same object as the macro call. Otherwise, the method specifier refers
-     * to a specific method either in scope at the macro application (unqualified)
-     * or selected from another module or package (qualified).
+     * call given by `c`.
+     *
+     * The method specifier has the following forms: If it is an unqualified
+     * name, then the method with that name in the calling context will be
+     * used. If it is a name qualified by object or package name, then the
+     * method in the named object or package will be called. If it is qualified
+     * and begins with `"this"`, then the method will be called on the same
+     * object as the macro invocation.
+
+     * Before the method specifier is interpreted, all occurrences of the
+     * string `macroNamePat` are replaced by the name of the macro.
+     *
+     * If the method specifiier is omitted, it defaults to `macroNamePat`.
      */
-    def makeCallWithName[T] (c : Context, optMethodSpec : Option[String] = None) : c.Expr[T] = {
+    def makeCallWithName[T] (c : Context, methodSpec : String = macroNamePat) : c.Expr[T] = {
 
         import c.{universe => u}
         import u._
@@ -204,11 +214,11 @@ object DSName {
 
             }
 
-            // Default the method name to the macro name
-            val methodSpec : String = optMethodSpec.getOrElse (macroName.decoded)
+            // Replace the macro name placeholder with the macro name
+            val methodNameStr = methodSpec.replaceAllLiterally (macroNamePat, macroNameStr)
 
             // Build the method call
-            methodSpec.split ('.') match {
+            methodNameStr.split ('.') match {
 
                 case Array () =>
                     c.error (c.enclosingPosition,

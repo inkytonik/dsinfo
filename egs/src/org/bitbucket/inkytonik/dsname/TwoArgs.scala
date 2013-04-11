@@ -33,9 +33,9 @@ object TwoArgsMaker {
         macro makeTwoArgsWithName
 
     def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
-        makeCallWithName (c, "TwoArgsMaker.mkTwoArgs")
+        makeCallWithName (c, "TwoArgsMaker.mk$macro")
 
-    def mkTwoArgs (name : String, i : Int, s : String) : TwoArgs =
+    def mktwoargs (name : String, i : Int, s : String) : TwoArgs =
         TwoArgs (name, i, s)
 
 }

@@ -762,4 +762,18 @@ class Tests extends FunSuite {
         expectResult ("namedInt3", "NamedInt name") (namedInt3.name)
     }
 
+    val namedInt4 = NamedInt ("six", 6).decrement (7)
+
+    test ("decremented NamedInt is correctly built") {
+        expectResult (-1, "NamedInt i") (namedInt4.i)
+        expectResult ("namedInt4", "NamedInt name") (namedInt4.name)
+    }
+
+    val namedInt5 = NamedInt ("eight", 8).decrement (9).decrement (10)
+
+    test ("a doubly decremented NamedInt is correctly built") {
+        expectResult (-11, "NamedInt i") (namedInt5.i)
+        expectResult ("namedInt5", "NamedInt name") (namedInt5.name)
+    }
+
 }
