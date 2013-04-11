@@ -101,6 +101,40 @@ object DSName {
                 optFindValNameIn (body).getOrElse (macroNameStr)
 
             /**
+             * Traverser that looks for the macro invocation as the right-hand side of a
+             * value definition anywhere in a given tree. If found, record the name in
+             * `optName`, which defaults to `None`.
+             */
+            class FindValDefTraverser extends Traverser {
+
+                var optName : Option[String] = None
+
+                override def traverse (tree : c.Tree) =
+                    tree match {
+
+                        case ValDef (_, valname, _, rhs) if isThisInvocation (rhs) =>
+                            optName = Some (valname.decoded)
+
+                        case _ =>
+                            super.traverse (tree)
+
+                    }
+
+            }
+
+            /**
+             * Run a val def traverser on a list of trees and if a matching val def is found,
+             * return the name of that def. Otherwise, return the macro name. The traversal
+             * is breadth-first, so we will find the most common case of val defs at the top
+             * of a template first, before descending deeper into the tree.
+             */
+            def getValDefNameInTrees (body : List[c.Tree]) : String = {
+                val traverser = new FindValDefTraverser
+                traverser.traverseTrees (body)
+                traverser.optName.getOrElse (macroNameStr)
+            }
+
+            /**
              * Find the name of the entity for which this macro application is
              * the right-hand side, or the macro name if one can't be found.
              */
@@ -129,21 +163,19 @@ object DSName {
                             case None if isThisInvocation (expr) =>
                                 defname.decoded
                             case None =>
-                                // println (s"c.enclosingMethod = ${c.enclosingMethod}")
-                                // println (s"c.enclosingMethod = ${u.showRaw (c.enclosingMethod)}")
                                 macroNameStr
                         }
 
-                    // Not a def, look for a val in enclosing template bodies
+                    // Not a def def, look for a val def in anywhere in the enclosing template bodies
                     case _ =>
 
                         c.enclosingClass match {
 
                             case ClassDef (_, _, _, Template (_, _, body)) =>
-                                getValNameIn (body)
+                                getValDefNameInTrees (body)
 
                             case ModuleDef (_, _, Template (_, _, body)) =>
-                                getValNameIn (body)
+                                getValDefNameInTrees (body)
 
                             case tree =>
                                 c.error (c.enclosingPosition,
@@ -154,8 +186,9 @@ object DSName {
 
                 }
 
+
             /**
-             * Make the call, gvien a tree for the method.
+             * Make the call, given a tree for the method.
              */
             def makeCall[T] (method : c.Tree) : c.Expr[T] = {
 
@@ -203,6 +236,12 @@ object DSName {
             }
 
         }
+
+        // println (s"c.enclosingClass = ${c.enclosingClass}")
+        // println (s"c.enclosingClass = ${u.showRaw (c.enclosingClass)}")
+
+        // println (s"c.enclosingMethod = ${c.enclosingMethod}")
+        // println (s"c.enclosingMethod = ${u.showRaw (c.enclosingMethod)}")
 
         // println (s"c.macroApplication = $c.macroApplication")
         // println (s"c.macroApplication = ${u.showRaw (c.macroApplication)}")

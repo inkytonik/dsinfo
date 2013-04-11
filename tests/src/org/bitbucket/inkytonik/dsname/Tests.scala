@@ -23,7 +23,7 @@ package org.bitbucket.inkytonik.dsname
 
 import org.scalatest.FunSuite
 
-class MakeWithNameTests extends FunSuite {
+class Tests extends FunSuite {
 
     import NoArgsMaker.noargs
     import OneArgMaker.onearg
@@ -78,6 +78,11 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("noargs", "embedded val value name") (valnoargs5.get.name)
     }
 
+    test ("a closure-local NoArgs val is correctly built") {
+        val valnoargs6 = noargs ()
+        expectResult ("valnoargs6", "closure-local val value name") (valnoargs6.name)
+    }
+
     // No argument tests (lazy val)
 
     lazy val lazyvalnoargs1 = noargs ()
@@ -117,6 +122,11 @@ class MakeWithNameTests extends FunSuite {
 
     test ("an embedded NoArgs lazy val is correctly built") {
         expectResult ("noargs", "embedded lazy val value name") (lazyvalnoargs5.get.name)
+    }
+
+    test ("a closure-local NoArgs lazy val is correctly built") {
+        lazy val lazyvalnoargs6 = noargs ()
+        expectResult ("lazyvalnoargs6", "closure-local lazy val value name") (lazyvalnoargs6.name)
     }
 
     // No argument tests (def)
@@ -169,6 +179,11 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("noargs", "embedded value def name") (defnoargs6.get.name)
     }
 
+    test ("a closure-local NoArgs def is correctly built") {
+        def defnoargs7 = noargs ()
+        expectResult ("defnoargs7", "closure-local def value name") (defnoargs7.name)
+    }
+
     // One argument tests (val)
 
     val valonearg1 = onearg (Arg (1))
@@ -215,6 +230,12 @@ class MakeWithNameTests extends FunSuite {
         expectResult (Arg (5), "embedded value val a") (valonearg5.get.a)
     }
 
+    test ("a closure-local OneArg val is correctly built") {
+        val valonearg6 = onearg (Arg (6))
+        expectResult ("valonearg6", "closure-local val value name") (valonearg6.name)
+        expectResult (Arg (6), "closure-local val value a") (valonearg6.a)
+    }
+
     // One argument tests (lazy val)
 
     lazy val lazyvalonearg1 = onearg (Arg (1))
@@ -259,6 +280,12 @@ class MakeWithNameTests extends FunSuite {
     test ("an embedded OneArg lazy val is correctly built") {
         expectResult ("onearg", "embedded value lazy val name") (lazyvalonearg5.get.name)
         expectResult (Arg (5), "embedded value lazy val a") (lazyvalonearg5.get.a)
+    }
+
+    test ("a closure-local OneArg lazy val is correctly built") {
+        lazy val lazyvalonearg6 = onearg (Arg (6))
+        expectResult ("lazyvalonearg6", "closure-local lazy val value name") (lazyvalonearg6.name)
+        expectResult (Arg (6), "closure-local lazy val a") (lazyvalonearg6.a)
     }
 
     // One argument tests (def)
@@ -317,6 +344,12 @@ class MakeWithNameTests extends FunSuite {
         expectResult (Arg (6), "embedded def value a") (defonearg6.get.a)
     }
 
+    test ("a closure-local OneArg def is correctly built") {
+        def defnoargs7 = onearg (Arg (7))
+        expectResult ("defnoargs7", "closure-local def value name") (defnoargs7.name)
+        expectResult (Arg (7), "closure-local def value a") (defnoargs7.a)
+    }
+
     // Two argument tests (val)
 
     val valtwoargs1 = twoargs (1, "one")
@@ -368,6 +401,13 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("five", "embedded val value s") (valtwoargs5.get.s)
     }
 
+    test ("a closure-local TwoArgs val is correctly built") {
+        val valtwoargs6 = twoargs (6, "six")
+        expectResult ("valtwoargs6", "closure-local val value name") (valtwoargs6.name)
+        expectResult (6, "closure-local val value i") (valtwoargs6.i)
+        expectResult ("six", "closure-local val value s") (valtwoargs6.s)
+    }
+
     // Two argument tests (lazy val)
 
     lazy val lazyvaltwoargs1 = twoargs (1, "one")
@@ -417,6 +457,13 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("twoargs", "embedded lazy val value name") (lazyvaltwoargs5.get.name)
         expectResult (5, "embedded lazy val value i") (lazyvaltwoargs5.get.i)
         expectResult ("five", "embedded lazy val value s") (lazyvaltwoargs5.get.s)
+    }
+
+    test ("a closure-local TwoArgs lazy val is correctly built") {
+        val lazyvaltwoargs6 = twoargs (6, "six")
+        expectResult ("lazyvaltwoargs6", "closure-local lazy val value name") (lazyvaltwoargs6.name)
+        expectResult (6, "closure-local lazy val value i") (lazyvaltwoargs6.i)
+        expectResult ("six", "closure-local lazy val value s") (lazyvaltwoargs6.s)
     }
 
     // Two argument tests (def)
@@ -481,6 +528,13 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("six", "embedded def value s") (deftwoargs6.get.s)
     }
 
+    test ("a closure-local TwoArgs def is correctly built") {
+        def deftwoargs7 = twoargs (7, "seven")
+        expectResult ("deftwoargs7", "closure-local def value name") (deftwoargs7.name)
+        expectResult (7, "closure-local def value i") (deftwoargs7.i)
+        expectResult ("seven", "closure-local def value s") (deftwoargs7.s)
+    }
+
     // Three argument tests (val)
 
     val valthreeargs1 = threeargs (1) (true, "one")
@@ -537,6 +591,14 @@ class MakeWithNameTests extends FunSuite {
         expectResult ("five", "embedded val value s") (valthreeargs5.get.s)
     }
 
+    test ("a closure-local ThreeArgs val is correctly built") {
+        val valthreeargs6 = threeargs (6) (false, "six")
+        expectResult ("valthreeargs6", "closure-local val value name") (valthreeargs6.name)
+        expectResult (6, "closure-local val value i") (valthreeargs6.i)
+        expectResult (false, "closure-local val value b") (valthreeargs6.b)
+        expectResult ("six", "closure-local val value s") (valthreeargs6.s)
+    }
+
     // Three argument tests (lazy val)
 
     lazy val lazyvalthreeargs1 = threeargs (1) (true, "one")
@@ -591,6 +653,14 @@ class MakeWithNameTests extends FunSuite {
         expectResult (5, "embedded lazy val value i") (lazyvalthreeargs5.get.i)
         expectResult (true, "embedded lazy val value b") (lazyvalthreeargs5.get.b)
         expectResult ("five", "embedded lazy val value s") (lazyvalthreeargs5.get.s)
+    }
+
+    test ("a closure-local ThreeArgs lazy val is correctly built") {
+        lazy val lazyvalthreeargs6 = threeargs (6) (false, "six")
+        expectResult ("lazyvalthreeargs6", "closure-local lazy val value name") (lazyvalthreeargs6.name)
+        expectResult (6, "closure-local lazy val value i") (lazyvalthreeargs6.i)
+        expectResult (false, "closure-local lazy val value b") (lazyvalthreeargs6.b)
+        expectResult ("six", "closure-local lazy val value s") (lazyvalthreeargs6.s)
     }
 
     // Three argument tests (def)
@@ -659,6 +729,14 @@ class MakeWithNameTests extends FunSuite {
         expectResult (6, "embedded def value i") (defthreeargs6.get.i)
         expectResult (true, "embedded def value b") (defthreeargs6.get.b)
         expectResult ("six", "embedded def value s") (defthreeargs6.get.s)
+    }
+
+    test ("a closure-local ThreeArgs def is correctly built") {
+        def defthreeargs7 = threeargs (7) (true, "seven")
+        expectResult ("defthreeargs7", "closure-local def value name") (defthreeargs7.name)
+        expectResult (7, "closure-local def value i") (defthreeargs7.i)
+        expectResult (true, "closure-local def value b") (defthreeargs7.b)
+        expectResult ("seven", "closure-local def value s") (defthreeargs7.s)
     }
 
     // Test of methods as macros
