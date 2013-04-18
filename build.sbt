@@ -2,7 +2,7 @@
 
 version in ThisBuild := "0.1.0-SNAPSHOT"
 
-organization in ThisBuild := "org.bitbucket.inkytonik.dsname"
+organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 // Scala compiler settings
 
@@ -44,7 +44,7 @@ libraryDependencies in ThisBuild <++= scalaVersion {
 logLevel in ThisBuild := Level.Info
 
 shellPrompt <<= (name, version) { (n, v) =>
-     _ => "dsname " + n + " " + v + "> "
+     _ => "dsinfo " + n + " " + v + "> "
 }
 
 // No main class since dsprofile is a library

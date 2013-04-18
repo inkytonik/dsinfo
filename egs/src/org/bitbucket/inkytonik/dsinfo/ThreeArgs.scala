@@ -1,5 +1,5 @@
 /**
- * This file is part of dsname.
+ * This file is part of dsinfo.
  *
  * Copyright (C) 2013 Anthony M Sloane, Macquarie University.
  * Copyright (C) 2013 Matthew Roberts, Macquarie University.
@@ -15,11 +15,11 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with dsname.  (See files COPYING and COPYING.LESSER.)  If not, see
+ * along with dsinfo.  (See files COPYING and COPYING.LESSER.)  If not, see
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.bitbucket.inkytonik.dsname
+package org.bitbucket.inkytonik.dsinfo
 
 case class ThreeArgs (name : String, i : Int, b : Boolean, s : String)
 
@@ -27,7 +27,7 @@ object ThreeArgsMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import DSName.makeCallWithName
+    import DSInfo.makeCallWithName
 
     def threeargs (i : Int) (b : Boolean, s : String) : ThreeArgs =
         macro makeThreeArgsWithName

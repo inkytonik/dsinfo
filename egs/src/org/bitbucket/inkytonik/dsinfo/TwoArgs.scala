@@ -1,5 +1,5 @@
 /**
- * This file is part of dsname.
+ * This file is part of dsinfo.
  *
  * Copyright (C) 2013 Anthony M Sloane, Macquarie University.
  * Copyright (C) 2013 Matthew Roberts, Macquarie University.
@@ -15,26 +15,27 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with dsname.  (See files COPYING and COPYING.LESSER.)  If not, see
+ * along with dsinfo.  (See files COPYING and COPYING.LESSER.)  If not, see
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.bitbucket.inkytonik.dsname
+package org.bitbucket.inkytonik.dsinfo
 
-case class Arg (i : Int)
+case class TwoArgs (name : String, i : Int, s : String)
 
-case class OneArg (name : String, a : Arg)
-
-object OneArgMaker {
+object TwoArgsMaker {
 
     import scala.language.experimental.macros
     import scala.reflect.macros.Context
-    import DSName.makeCallWithName
+    import DSInfo.makeCallWithName
 
-    def onearg (a : Arg) : OneArg =
-        macro makeOneArgWithName
+    def twoargs (i : Int, s : String) : TwoArgs =
+        macro makeTwoArgsWithName
 
-    def makeOneArgWithName (c : Context) (a : c.Expr[Arg]) : c.Expr[OneArg] =
-        makeCallWithName (c, "org.bitbucket.inkytonik.dsname.OneArg.apply")
+    def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
+        makeCallWithName (c, "TwoArgsMaker.mk$macro")
+
+    def mktwoargs (name : String, i : Int, s : String) : TwoArgs =
+        TwoArgs (name, i, s)
 
 }

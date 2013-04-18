@@ -1,7 +1,7 @@
 // Interactive settings
 
 shellPrompt <<= (name, version) { (n, v) =>
-     _ => "dsname " + n + " " + v + "> "
+     _ => "dsinfo " + n + " " + v + "> "
 }
 
 // Specify how to find source and test files.  Main sources are

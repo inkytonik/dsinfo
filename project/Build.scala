@@ -1,5 +1,5 @@
 /**
- * This file is part of dsname.
+ * This file is part of dsinfo.
  *
  * Copyright (C) 2013 Anthony M Sloane, Macquarie University.
  * Copyright (C) 2013 Matthew Roberts, Macquarie University.
@@ -15,32 +15,32 @@
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with dsname.  (See files COPYING and COPYING.LESSER.)  If not, see
+ * along with dsinfo.  (See files COPYING and COPYING.LESSER.)  If not, see
  * <http://www.gnu.org/licenses/>.
  */
 
 import sbt._
 import Keys._
 
-object DsNameBuild extends Build {
+object DSInfoBuild extends Build {
 
     lazy val root =
         Project (
             id = "root",
             base = file (".")
-        ) aggregate (dsname, egs, tests)
+        ) aggregate (dsinfo, egs, tests)
 
-    lazy val dsname =
+    lazy val dsinfo =
         Project (
-            id = "dsname",
-            base = file ("dsname")
+            id = "dsinfo",
+            base = file ("dsinfo")
         )
 
     lazy val egs =
         Project (
             id = "egs",
             base = file ("egs")
-        ) dependsOn (dsname)
+        ) dependsOn (dsinfo)
 
     lazy val tests =
         Project (

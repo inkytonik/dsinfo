@@ -1,14 +1,14 @@
-The dsname library
+The dsinfo library
 ==================
 
-The dsname library enables you to easily use Scala val and def names as the
+The dsinfo library enables you to easily use Scala val and def names as the
 names of domain-specific program entities.
 When implementing domain-specific internal languages in Scala, it is common
 to want to print out error messages or debugging information that refers to
 domain-specific entities by name.
 Unfortunately, an internal DSL implementation usually doesn't have access
 to the names that the DSL user has chosen at the Scala level.
-dsname enables the implementation to get access to those names without
+dsinfo enables the implementation to get access to those names without
 changing the DSL.
 
 For example, you can use the library to define operations such as `twoargs`
@@ -20,14 +20,14 @@ The idea is that we want `twoargs` to call a method that we specify.
 The method should be passed the arguments `1` and `"one"`, but also the
 name of the value, in this case `"foobar"`.
 
-dsname allows you to replace boilerplate where the user of your API has to
+dsinfo allows you to replace boilerplate where the user of your API has to
 repeat the name of domain-specific entities.
-For example, without dsname you would have to require the user to
+For example, without dsinfo you would have to require the user to
 explicitly provide the name as an extra argument, leading to duplication.
 
     val valtwoargs1 = twoargs ("valtwoargs1", 1, "one")
 
-dsname is implemented using Scala macros which are an experimental feature
+dsinfo is implemented using Scala macros which are an experimental feature
 of Scala 2.10.
 
 The library is released under the GNU Lesser General Public License. See the
@@ -51,20 +51,20 @@ Mercurial.
 Download and install the [Scala simple build tool](http://www.scala-sbt.org).
 
 Once sbt is installed, invoke it in the dsmain project top level.
-Switch to the `dsname` sub-project.
+Switch to the `dsinfo` sub-project.
 
-    dsname 0.1.0> project dsname
+    dsinfo 0.1.0> project dsinfo
 
 Then package that project.
 
-    dsname 0.1.0> package
+    dsinfo 0.1.0> package
 
 sbt will download all the necessary Scala compiler and library jars, build
 the library, and package it as a jar file.
-If all goes well, you should find the library jar in the `dsname/target`
+If all goes well, you should find the library jar in the `dsinfo/target`
 directory under a sub-directory for the Scala version that is being used.
-E.g., if the Scala version is 2.10, look in `dsname/target/scala_2.10` for
-`dsname_2.10-VERSION.jar` where `VERSION` is the dsname library version.
+E.g., if the Scala version is 2.10, look in `dsinfo/target/scala_2.10` for
+`dsinfo_2.10-VERSION.jar` where `VERSION` is the dsinfo library version.
 
 Version 0.1 has been tested with sbt 0.12.2, Scala 2.10.0 and Java
 1.7.0_17 running on Mac OS X 10.8.3.
@@ -103,9 +103,9 @@ The method that is called can do anything it likes with the arguments as
 long as it returns the correct type.
 
 The macro implementation is provided by `makeTwoArgsWithName`.
-Most of the work is done by the dsname routine called `makeCallWithName`.
+Most of the work is done by the dsinfo routine called `makeCallWithName`.
 
-      import org.bitbucket.inkytonik.dsname.DSName.makeCallWithName
+      import org.bitbucket.inkytonik.dsinfo.dsinfo.makeCallWithName
 
       def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
         makeCallWithName (c, "TwoArgsMaker.mkTwoArgs")
