@@ -38,6 +38,17 @@ unmanagedResources in Test <<= (scalaSource in Test) map { s => {
     (s ** (-"*.scala" && -HiddenFileFilter)).get
 }}
 
+// Documentation
+
+// Link the documentation to the source in the main repository
+
+scalacOptions in (Compile, doc) <++= baseDirectory map {
+    bd => Seq (
+        "-doc-source-url",
+            "https://bitbucket.org/inkytonik/dsinfo/src/default€{FILE_PATH}.scala"
+    )
+}
+
 // Publishing
 
 // FIXME

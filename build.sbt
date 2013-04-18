@@ -10,14 +10,16 @@ scalaVersion in ThisBuild := "2.10.1"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked")
 
-scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions) map {
-    (version, options) =>
+scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions, baseDirectory) map {
+    (version, options, bd) =>
         val versionOptions =
             if (version.startsWith ("2.10"))
                 Seq ("-feature")
             else
                 Seq ()
-        options ++ versionOptions
+        options ++ versionOptions ++ Seq (
+            "-sourcepath", bd.getAbsolutePath
+        )
 }
 
 scalacOptions in ThisBuild in Test <<= scalacOptions in ThisBuild in Compile
