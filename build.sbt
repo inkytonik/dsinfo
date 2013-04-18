@@ -20,15 +20,7 @@ scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions) map {
         options ++ versionOptions
 }
 
-scalacOptions in ThisBuild in Test <<= (scalaVersion, scalacOptions) map {
-    (version, options) =>
-        val versionOptions =
-            if (version.startsWith ("2.10"))
-                Seq ("-feature")
-            else
-                Seq ()
-        options ++ versionOptions
-}
+scalacOptions in ThisBuild in Test <<= scalacOptions in ThisBuild in Compile
 
 // Dependencies
 
