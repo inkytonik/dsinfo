@@ -51,39 +51,38 @@ scalacOptions in (Compile, doc) <++= baseDirectory map {
 
 // Publishing
 
-// FIXME
-// publishTo <<= version { v =>
-//     val nexus = "https://oss.sonatype.org/"
-//     if (v.trim.endsWith ("SNAPSHOT"))
-//         Some ("snapshots" at nexus + "content/repositories/snapshots")
-//     else
-//         Some ("releases" at nexus + "service/local/staging/deploy/maven2")
-// }
-//
-// publishMavenStyle := true
-//
-// publishArtifact in Test := true
-//
-// pomIncludeRepository := { x => false }
-//
-// pomExtra := (
-//     <url>http://kiama.googlecode.com</url>
-//     <licenses>
-//         <license>
-//             <name>LGPL 3.0 license</name>
-//             <url>http://www.opensource.org/licenses/lgpl-3.0.html</url>
-//             <distribution>repo</distribution>
-//         </license>
-//     </licenses>
-//     <scm>
-//         <url>https://kiama.googlecode.com/hg</url>
-//         <connection>scm:hg:https://kiama.googlecode.com/hg</connection>
-//     </scm>
-//     <developers>
-//         <developer>
-//            <id>inkytonik</id>
-//            <name>Tony Sloane</name>
-//            <url>https://code.google.com/u/inkytonik</url>
-//         </developer>
-//     </developers>
-// )
+publishTo <<= version { v =>
+    val nexus = "https://oss.sonatype.org/"
+    if (v.trim.endsWith ("SNAPSHOT"))
+        Some ("snapshots" at nexus + "content/repositories/snapshots")
+    else
+        Some ("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+
+publishMavenStyle := true
+
+publishArtifact in Test := true
+
+pomIncludeRepository := { x => false }
+
+pomExtra := (
+    <url>https://bitbucket.org/inkytonik/dsinfo</url>
+    <licenses>
+        <license>
+            <name>LGPL 3.0 license</name>
+            <url>http://www.opensource.org/licenses/lgpl-3.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://bitbucket.org/inkytonik/dsinfo</url>
+        <connection>scm:hg:https://bitbucket.org/inkytonik/dsinfo</connection>
+    </scm>
+    <developers>
+        <developer>
+           <id>inkytonik</id>
+           <name>Tony Sloane</name>
+           <url>https://bitbucket.org/inkytonik</url>
+        </developer>
+    </developers>
+)
