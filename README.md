@@ -1,8 +1,20 @@
 The dsinfo library
 ==================
 
-The dsinfo library enables you to easily use Scala val and def names as the
-names of domain-specific program entities.
+The dsinfo library enables you to easily use Scala-side information in
+implementations of embedded (internal) domain-specific languages.
+
+dsinfo is implemented using Scala macros which are an experimental feature
+of Scala 2.10.
+
+The library is released under the GNU Lesser General Public License. See the
+files `COPYING` and `COPYING.LESSER` for details.
+
+Domain-specific entity names
+============================
+
+dsinfo enables you to use Scala val and def names as the names of
+domain-specific program entities.
 When implementing domain-specific internal languages in Scala, it is common
 to want to print out error messages or debugging information that refers to
 domain-specific entities by name.
@@ -26,12 +38,6 @@ For example, without dsinfo you would have to require the user to
 explicitly provide the name as an extra argument, leading to duplication.
 
     val valtwoargs1 = twoargs ("valtwoargs1", 1, "one")
-
-dsinfo is implemented using Scala macros which are an experimental feature
-of Scala 2.10.
-
-The library is released under the GNU Lesser General Public License. See the
-files `COPYING` and `COPYING.LESSER` for details.
 
 Downloading the library
 =======================
@@ -69,8 +75,8 @@ E.g., if the Scala version is 2.10, look in `dsinfo/target/scala_2.10` for
 Version 0.1 has been tested with sbt 0.12.2, Scala 2.10.0 and Java
 1.7.0_17 running on Mac OS X 10.8.3.
 
-Using the library
-=================
+Using the library (entity names)
+================================
 
 Suppose that we want to define the `twoargs` example shown above. We want
 to construct values of the following type.
@@ -101,6 +107,9 @@ instance and returns it.
 There is no requirement that case classes be used.
 The method that is called can do anything it likes with the arguments as
 long as it returns the correct type.
+It is also possible to overload the `towargs` name instead of using a
+new name such as `mkTwoArgs`.
+The method can also take type parameters.
 
 The macro implementation is provided by `makeTwoArgsWithName`.
 Most of the work is done by the dsinfo routine called `makeCallWithName`.
@@ -176,6 +185,9 @@ Method name variants
 The method name argument to `makeCallWithName` can specify the method to
 call in a variety of ways.
 
+If the method name argument is omitted, it defaults to the name of the
+macro (`twoargs` in the example above.)
+
 As shown in the example above, if the method name is qualified then the
 method that is called comes the specified object and/or package.
 
@@ -191,5 +203,10 @@ E.g., if the name is `"this.mkTwoARgs"` and the macro call is
 `myObj.twoargs (1, "one")` then the call that is generated is
 `myObj.mkTwoArgs ("name", 1, "one")` where `"name"` is the definition name.
 
+In general, the method name argument can contain the sub-string `$macro`.
+This sub-string is replaced by the name of the macro.
+Thus, the default method name is `"$macro"`.
 
-
+As a convenience, the entry point `makeThisCallWithName` is short-hand
+for making a call using the method name `"this.$macro"`.
+It only requires the `Context` argument.
