@@ -208,9 +208,14 @@ object DSInfo {
 
                 // Wrap the base in as many applications as are needed to pass the
                 // other argument lists (if any)
-                c.Expr[T] (argsn.foldLeft (base) {
-                               case (t, a) => Apply (t, a)
-                           })
+                val result = argsn.foldLeft (base) {
+                                 case (t, a) => Apply (t, a)
+                             }
+
+                // Hack to avoid Scala bug SI-6743. Set the position of the result tree
+                // to some position. This avoids a validation error if the -Yrangepos
+                // option is given.
+                c.Expr[T] (atPos (c.enclosingPosition) (result))
 
             }
 
