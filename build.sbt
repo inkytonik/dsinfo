@@ -1,22 +1,22 @@
 // Main settings
 
-version in ThisBuild := "0.2.0"
+version in ThisBuild := "0.3.0-SNAPSHOT"
 
 organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 // Scala compiler settings
 
-scalaVersion in ThisBuild := "2.10.1"
+scalaVersion in ThisBuild := "2.10.2"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked")
 
 scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions, baseDirectory) map {
     (version, options, bd) =>
         val versionOptions =
-            if (version.startsWith ("2.10"))
-                Seq ("-feature")
-            else
+            if (version.startsWith ("2.9"))
                 Seq ()
+            else
+                Seq ("-feature")
         options ++ versionOptions ++ Seq (
             "-sourcepath", bd.getAbsolutePath
         )
