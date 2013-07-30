@@ -42,11 +42,11 @@ explicitly provide the name as an extra argument, leading to duplication.
 Downloading the library
 =======================
 
-We expect to publish the library in the Maven Central repository at some
-point.
+The library is published in the Maven Central repository.
+If you are using sbt you should include the following in your library
+dependencies:
 
-In the meantime, you will need to clone the repository, then build and
-publish locally.
+    "org.bitbucket.inkytonik.dsinfo" %% "dsinfo" % "0.2.0"
 
 Building the library
 ====================
@@ -189,7 +189,7 @@ If the method name argument is omitted, it defaults to the name of the
 macro (`twoargs` in the example above.)
 
 As shown in the example above, if the method name is qualified then the
-method that is called comes the specified object and/or package.
+method that is called comes from the specified object and/or package.
 
 If the method name is unqualified then the method must exist in the scope
 of the call of the macro.
