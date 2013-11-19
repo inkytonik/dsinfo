@@ -114,7 +114,7 @@ The method can also take type parameters.
 The macro implementation is provided by `makeTwoArgsWithName`.
 Most of the work is done by the dsinfo routine called `makeCallWithName`.
 
-      import org.bitbucket.inkytonik.dsinfo.dsinfo.makeCallWithName
+      import org.bitbucket.inkytonik.dsinfo.DSInfo.makeCallWithName
 
       def makeTwoArgsWithName (c : Context) (i : c.Expr[Int], s : c.Expr[String]) : c.Expr[TwoArgs] =
         makeCallWithName (c, "TwoArgsMaker.mkTwoArgs")
