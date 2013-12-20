@@ -59,11 +59,11 @@ Download and install the [Scala simple build tool](http://www.scala-sbt.org).
 Once sbt is installed, invoke it in the dsmain project top level.
 Switch to the `dsinfo` sub-project.
 
-    dsinfo 0.1.0> project dsinfo
+    dsinfo 0.3.0> project dsinfo
 
 Then package that project.
 
-    dsinfo 0.1.0> package
+    dsinfo 0.3.0> package
 
 sbt will download all the necessary Scala compiler and library jars, build
 the library, and package it as a jar file.
@@ -72,8 +72,8 @@ directory under a sub-directory for the Scala version that is being used.
 E.g., if the Scala version is 2.10, look in `dsinfo/target/scala_2.10` for
 `dsinfo_2.10-VERSION.jar` where `VERSION` is the dsinfo library version.
 
-Version 0.1 has been tested with sbt 0.12.2, Scala 2.10.0 and Java
-1.7.0_17 running on Mac OS X 10.8.3.
+Version 0.3 has been tested with sbt 0.13.1, Scala 2.10.3 and Java
+1.7.0_45 running on Mac OS X 10.9.1.
 
 Using the library (entity names)
 ================================
