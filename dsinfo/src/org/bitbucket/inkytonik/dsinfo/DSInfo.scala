@@ -64,10 +64,9 @@ object DSInfo {
         /**
          * Helper function to do the real work once the macro name and arguments
          * have been determined. `obj` is the object to which the macro was
-         * applied. `macroArgs` is a list of the argument lists that were supplied
-         * to the macro call. `args` is the first argument list; the name is
-         * pre-pended to this list. `argsn` is the other argument lists. They are
-         * passed unchanged.
+         * applied. `macroName` is the name that was supplied in the call.
+         * `args1` is the first argument list; the name is pre-pended to this
+         * list. `argsn` is the other argument lists. They are passed unchanged.
          */
         def constructCall[T] (obj : c.Tree, macroName : Name, args1 : List[c.Tree],
                               argsn : List[List[c.Tree]]) : c.Expr[T] = {
@@ -278,6 +277,14 @@ object DSInfo {
             case Apply (Apply (Select (obj, macroName), args1), args2) =>
                 constructCall (obj, macroName, args1, List (args2))
 
+            // Three argument lists
+            case Apply (Apply (Apply (Select (obj, macroName), args1), args2), args3) =>
+                constructCall (obj, macroName, args1, List (args2, args3))
+
+            // Four argument lists
+            case Apply (Apply (Apply (Apply (Select (obj, macroName), args1), args2), args3), args4) =>
+                constructCall (obj, macroName, args1, List (args2, args3, args4))
+
             // One argument list + type application
             case Apply (TypeApply (Select (obj, macroName), _), args1) =>
                 constructCall (obj, macroName, args1, Nil)
@@ -285,6 +292,14 @@ object DSInfo {
             // Two arguments list + type application
             case Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2) =>
                 constructCall (obj, macroName, args1, List (args2))
+
+            // Three argument lists + type application
+            case Apply (Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2), args3) =>
+                constructCall (obj, macroName, args1, List (args2, args3))
+
+            // Four argument lists + type application
+            case Apply (Apply (Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2), args3), args4) =>
+                constructCall (obj, macroName, args1, List (args2, args3, args4))
 
             case t =>
                 c.error (c.enclosingPosition,
