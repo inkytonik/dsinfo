@@ -41,7 +41,7 @@ shellPrompt <<= (name, version) { (n, v) =>
      _ => "dsinfo " + n + " " + v + "> "
 }
 
-// No main class since dsprofile is a library
+// No main class since dsinfo is a library
 
 mainClass in ThisBuild := None
 
