@@ -1,6 +1,6 @@
 // Main settings
 
-version in ThisBuild := "0.3.0"
+version in ThisBuild := "0.4.0-SNAPSHOT"
 
 organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
