@@ -26,7 +26,7 @@ case class NoArgs (name : String)
 object NoArgsMaker {
 
     import scala.language.experimental.macros
-    import scala.reflect.macros.Context
+    import scala.reflect.macros.blackbox.Context
     import DSInfo.makeCallWithName
 
     def noargs () : NoArgs =

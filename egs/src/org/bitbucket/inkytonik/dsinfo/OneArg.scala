@@ -28,7 +28,7 @@ case class OneArg (name : String, a : Arg)
 object OneArgMaker {
 
     import scala.language.experimental.macros
-    import scala.reflect.macros.Context
+    import scala.reflect.macros.blackbox.Context
     import DSInfo.makeCallWithName
 
     def onearg (a : Arg) : OneArg =

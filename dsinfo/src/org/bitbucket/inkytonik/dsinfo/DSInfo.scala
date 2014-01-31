@@ -23,7 +23,7 @@ package org.bitbucket.inkytonik.dsinfo
 
 object DSInfo {
 
-    import scala.reflect.macros.Context
+    import scala.reflect.macros.blackbox.Context
 
     /**
      * The pattern that will be replaced by the macro name (`"\$macro"`).

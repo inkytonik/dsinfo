@@ -41,7 +41,7 @@ case class NamedInt (name : String, i : Int) {
 
 object NamedIntMaker {
 
-    import scala.reflect.macros.Context
+    import scala.reflect.macros.blackbox.Context
     import DSInfo.{makeCallWithName, makeThisCallWithName}
 
     // Use explicit "this" method spec

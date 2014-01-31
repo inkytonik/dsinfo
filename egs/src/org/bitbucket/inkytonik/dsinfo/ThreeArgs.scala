@@ -26,7 +26,7 @@ case class ThreeArgs (name : String, i : Int, b : Boolean, s : String)
 object ThreeArgsMaker {
 
     import scala.language.experimental.macros
-    import scala.reflect.macros.Context
+    import scala.reflect.macros.blackbox.Context
     import DSInfo.makeCallWithName
 
     def threeargs (i : Int) (b : Boolean, s : String) : ThreeArgs =

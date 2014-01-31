@@ -26,7 +26,7 @@ case class TwoArgs (name : String, i : Int, s : String)
 object TwoArgsMaker {
 
     import scala.language.experimental.macros
-    import scala.reflect.macros.Context
+    import scala.reflect.macros.blackbox.Context
     import DSInfo.makeCallWithName
 
     def twoargs (i : Int, s : String) : TwoArgs =
