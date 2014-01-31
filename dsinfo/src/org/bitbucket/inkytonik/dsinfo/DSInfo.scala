@@ -236,10 +236,10 @@ object DSInfo {
                         if (components.head == "this")
                             obj
                         else
-                            Ident (newTermName (encode (components.head)))
+                            Ident (TermName (encode (components.head)))
                     val method =
                         components.tail.foldLeft (head) {
-                            case (t, s) => Select (t, newTermName (encode (s)))
+                            case (t, s) => Select (t, TermName (encode (s)))
                         }
 
                     // println (s"method = $method")
