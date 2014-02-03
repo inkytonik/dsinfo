@@ -546,8 +546,8 @@ class Tests extends FunSuite {
         assertResult ("one", "class level val value s") (valthreeargs1.s)
     }
 
-    def valThreeArgsMethod : ThreeArgs = {
-        val valthreeargs2 = threeargs (2) (false, "two")
+    def valThreeArgsMethod : ThreeArgs[Int] = {
+        val valthreeargs2 = threeargs[Int] (2) (false, "two")
         valthreeargs2
     }
 
@@ -610,14 +610,14 @@ class Tests extends FunSuite {
         assertResult ("one", "class level lazy val value s") (lazyvalthreeargs1.s)
     }
 
-    def lazyvalThreeArgsMethod : ThreeArgs = {
-        lazy val lazyvalthreeargs2 = threeargs (2) (false, "two")
+    def lazyvalThreeArgsMethod : ThreeArgs[Char] = {
+        lazy val lazyvalthreeargs2 = threeargs[Char] ('a') (false, "two")
         lazyvalthreeargs2
     }
 
     test ("a threeArgsMethod level ThreeArgs lazy val is correctly built") {
         assertResult ("lazyvalthreeargs2", "threeArgsMethod level lazy val value name") (lazyvalThreeArgsMethod.name)
-        assertResult (2, "threeArgsMethod level lazy val value i") (lazyvalThreeArgsMethod.i)
+        assertResult ('a', "threeArgsMethod level lazy val value i") (lazyvalThreeArgsMethod.i)
         assertResult (false, "threeArgsMethod level lazy val value b") (lazyvalThreeArgsMethod.b)
         assertResult ("two", "threeArgsMethod level lazy val value s") (lazyvalThreeArgsMethod.s)
     }
@@ -686,8 +686,8 @@ class Tests extends FunSuite {
         assertResult ("two", "class level def (body) value s") (defthreeargs2.s)
     }
 
-    def defThreeArgsMethod : ThreeArgs = {
-        def defthreeargs3 = threeargs (3) (false, "three")
+    def defThreeArgsMethod : ThreeArgs[Double] = {
+        def defthreeargs3 = threeargs[Double] (3.0) (false, "three")
         defthreeargs3
     }
 

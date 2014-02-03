@@ -21,7 +21,7 @@
 
 package org.bitbucket.inkytonik.dsinfo
 
-case class ThreeArgs (name : String, i : Int, b : Boolean, s : String)
+case class ThreeArgs[T] (name : String, i : T, b : Boolean, s : String)
 
 object ThreeArgsMaker {
 
@@ -29,13 +29,13 @@ object ThreeArgsMaker {
     import scala.reflect.macros.blackbox.Context
     import DSInfo.makeCallWithName
 
-    def threeargs (i : Int) (b : Boolean, s : String) : ThreeArgs =
-        macro makeThreeArgsWithName
+    def threeargs[T] (i : T) (b : Boolean, s : String) : ThreeArgs[T] =
+        macro makeThreeArgsWithName[T]
 
-    def makeThreeArgsWithName (c : Context) (i : c.Expr[Int]) (b : c.Expr[Boolean], s : c.Expr[String]) : c.Expr[ThreeArgs] =
+    def makeThreeArgsWithName[T] (c : Context) (i : c.Expr[T]) (b : c.Expr[Boolean], s : c.Expr[String]) : c.Expr[ThreeArgs[T]] =
         makeCallWithName (c)
 
-    def threeargs (name : String, i : Int) (b : Boolean, s : String) : ThreeArgs =
+    def threeargs[T] (name : String, i : T) (b : Boolean, s : String) : ThreeArgs[T] =
         ThreeArgs (name, i, b, s)
 
 }
