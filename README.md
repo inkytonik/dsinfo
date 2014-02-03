@@ -5,7 +5,7 @@ The dsinfo library enables you to easily use Scala-side information in
 implementations of embedded (internal) domain-specific languages.
 
 dsinfo is implemented using Scala macros which are an experimental feature
-of Scala 2.10.
+of Scala 2.10 and 2.11.
 
 The library is released under the GNU Lesser General Public License. See the
 files `COPYING` and `COPYING.LESSER` for details.
@@ -46,7 +46,7 @@ The library is published in the Maven Central repository.
 If you are using sbt you should include the following in your library
 dependencies:
 
-    "org.bitbucket.inkytonik.dsinfo" %% "dsinfo" % "0.2.0"
+    "org.bitbucket.inkytonik.dsinfo" %% "dsinfo" % "0.4.0"
 
 Building the library
 ====================
@@ -59,11 +59,11 @@ Download and install the [Scala simple build tool](http://www.scala-sbt.org).
 Once sbt is installed, invoke it in the dsmain project top level.
 Switch to the `dsinfo` sub-project.
 
-    dsinfo 0.3.0> project dsinfo
+    dsinfo 0.4.0> project dsinfo
 
 Then package that project.
 
-    dsinfo 0.3.0> package
+    dsinfo 0.4.0> package
 
 sbt will download all the necessary Scala compiler and library jars, build
 the library, and package it as a jar file.
@@ -72,8 +72,8 @@ directory under a sub-directory for the Scala version that is being used.
 E.g., if the Scala version is 2.10, look in `dsinfo/target/scala_2.10` for
 `dsinfo_2.10-VERSION.jar` where `VERSION` is the dsinfo library version.
 
-Version 0.3 has been tested with sbt 0.13.1, Scala 2.10.3 and Java
-1.7.0_45 running on Mac OS X 10.9.1.
+Version 0.4 has been tested with sbt 0.13.1, Scala 2.11.0 and Java
+1.7.0_51 running on Mac OS X 10.9.1.
 
 Using the library (entity names)
 ================================
@@ -88,7 +88,7 @@ First, we need to import the macro feature and macro contexts.
     object TwoArgsMaker {
 
       import scala.language.experimental.macros
-      import scala.reflect.macros.Context
+      import scala.reflect.macros.blackbox.Context
 
 We now define the entry point as a `twoargs` method that is implemented by
 a macro.
