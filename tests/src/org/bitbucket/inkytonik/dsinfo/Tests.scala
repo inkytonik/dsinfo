@@ -75,7 +75,7 @@ class Tests extends FunSuite {
     val valnoargs5 = Some (noargs ())
 
     test ("an embedded NoArgs val is correctly built") {
-        assertResult ("noargs", "embedded val value name") (valnoargs5.get.name)
+        assertResult ("valnoargs5", "embedded val value name") (valnoargs5.get.name)
     }
 
     test ("a closure-local NoArgs val is correctly built") {
@@ -121,7 +121,7 @@ class Tests extends FunSuite {
     lazy val lazyvalnoargs5 = Some (noargs ())
 
     test ("an embedded NoArgs lazy val is correctly built") {
-        assertResult ("noargs", "embedded lazy val value name") (lazyvalnoargs5.get.name)
+        assertResult ("lazyvalnoargs5", "embedded lazy val value name") (lazyvalnoargs5.get.name)
     }
 
     test ("a closure-local NoArgs lazy val is correctly built") {
@@ -176,7 +176,7 @@ class Tests extends FunSuite {
     def defnoargs6 = Some (noargs ())
 
     test ("an embedded NoArgs def is correctly built") {
-        assertResult ("noargs", "embedded value def name") (defnoargs6.get.name)
+        assertResult ("defnoargs6", "embedded value def name") (defnoargs6.get.name)
     }
 
     test ("a closure-local NoArgs def is correctly built") {
@@ -226,7 +226,7 @@ class Tests extends FunSuite {
     val valonearg5 = Some (onearg (Arg (5)))
 
     test ("an embedded OneArg val is correctly built") {
-        assertResult ("onearg", "embedded value val name") (valonearg5.get.name)
+        assertResult ("valonearg5", "embedded value val name") (valonearg5.get.name)
         assertResult (Arg (5), "embedded value val a") (valonearg5.get.a)
     }
 
@@ -278,7 +278,7 @@ class Tests extends FunSuite {
     val lazyvalonearg5 = Some (onearg (Arg (5)))
 
     test ("an embedded OneArg lazy val is correctly built") {
-        assertResult ("onearg", "embedded value lazy val name") (lazyvalonearg5.get.name)
+        assertResult ("lazyvalonearg5", "embedded value lazy val name") (lazyvalonearg5.get.name)
         assertResult (Arg (5), "embedded value lazy val a") (lazyvalonearg5.get.a)
     }
 
@@ -340,7 +340,7 @@ class Tests extends FunSuite {
     def defonearg6 = Some (onearg (Arg (6)))
 
     test ("an embedded OneArg def is correctly built") {
-        assertResult ("onearg", "embedded def value name") (defonearg6.get.name)
+        assertResult ("defonearg6", "embedded def value name") (defonearg6.get.name)
         assertResult (Arg (6), "embedded def value a") (defonearg6.get.a)
     }
 
@@ -396,7 +396,7 @@ class Tests extends FunSuite {
     val valtwoargs5 = Some (twoargs (5, "five"))
 
     test ("an embedded TwoArgs val is correctly built") {
-        assertResult ("twoargs", "embedded val value name") (valtwoargs5.get.name)
+        assertResult ("valtwoargs5", "embedded val value name") (valtwoargs5.get.name)
         assertResult (5, "embedded val value i") (valtwoargs5.get.i)
         assertResult ("five", "embedded val value s") (valtwoargs5.get.s)
     }
@@ -454,7 +454,7 @@ class Tests extends FunSuite {
     lazy val lazyvaltwoargs5 = Some (twoargs (5, "five"))
 
     test ("an embedded TwoArgs lazy val is correctly built") {
-        assertResult ("twoargs", "embedded lazy val value name") (lazyvaltwoargs5.get.name)
+        assertResult ("lazyvaltwoargs5", "embedded lazy val value name") (lazyvaltwoargs5.get.name)
         assertResult (5, "embedded lazy val value i") (lazyvaltwoargs5.get.i)
         assertResult ("five", "embedded lazy val value s") (lazyvaltwoargs5.get.s)
     }
@@ -523,7 +523,7 @@ class Tests extends FunSuite {
     def deftwoargs6 = Some (twoargs (6, "six"))
 
     test ("an embedded TwoArgs def is correctly built") {
-        assertResult ("twoargs", "embedded def value name") (deftwoargs6.get.name)
+        assertResult ("deftwoargs6", "embedded def value name") (deftwoargs6.get.name)
         assertResult (6, "embedded def value i") (deftwoargs6.get.i)
         assertResult ("six", "embedded def value s") (deftwoargs6.get.s)
     }
@@ -585,7 +585,7 @@ class Tests extends FunSuite {
     val valthreeargs5 = Some (threeargs (5) (true, "five"))
 
     test ("an embedded ThreeArgs val is correctly built") {
-        assertResult ("threeargs", "embedded val value name") (valthreeargs5.get.name)
+        assertResult ("valthreeargs5", "embedded val value name") (valthreeargs5.get.name)
         assertResult (5, "embedded val value i") (valthreeargs5.get.i)
         assertResult (true, "embedded val value b") (valthreeargs5.get.b)
         assertResult ("five", "embedded val value s") (valthreeargs5.get.s)
@@ -649,7 +649,7 @@ class Tests extends FunSuite {
     lazy val lazyvalthreeargs5 = Some (threeargs (5) (true, "five"))
 
     test ("an embedded ThreeArgs lazy val is correctly built") {
-        assertResult ("threeargs", "embedded lazy val value name") (lazyvalthreeargs5.get.name)
+        assertResult ("lazyvalthreeargs5", "embedded lazy val value name") (lazyvalthreeargs5.get.name)
         assertResult (5, "embedded lazy val value i") (lazyvalthreeargs5.get.i)
         assertResult (true, "embedded lazy val value b") (lazyvalthreeargs5.get.b)
         assertResult ("five", "embedded lazy val value s") (lazyvalthreeargs5.get.s)
@@ -725,7 +725,7 @@ class Tests extends FunSuite {
     def defthreeargs6 = Some (threeargs (6) (true, "six"))
 
     test ("an embedded ThreeArgs def is correctly built") {
-        assertResult ("threeargs", "embedded def value name") (defthreeargs6.get.name)
+        assertResult ("defthreeargs6", "embedded def value name") (defthreeargs6.get.name)
         assertResult (6, "embedded def value i") (defthreeargs6.get.i)
         assertResult (true, "embedded def value b") (defthreeargs6.get.b)
         assertResult ("six", "embedded def value s") (defthreeargs6.get.s)

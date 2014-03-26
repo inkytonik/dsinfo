@@ -146,55 +146,19 @@ object DSInfo {
             /**
              * Find the name of the entity for which this macro application is
              * the right-hand side, or the macro name if one can't be found.
+             * For some reason some symbol names come with a space on the end
+             * of the name, and lazy values come with $lzy suffixes. If either
+             * are there, trim the unwanted suffix.
              */
-            def nameOfEnclosing : String =
-                c.enclosingMethod match {
-
-                    // Macro invocation lies inside a definition of a lazy val of the form
-                    //   lazy def foo : ... = {
-                    //      foo$lzy = <macro invocation>
-                    //      foo$lzy
-                    //   }
-                    case DefDef (_, defname, _, _, _, Block (List (Assign (_, exp)), _)) if isThisInvocation (exp) =>
-                        defname.decodedName.toString
-
-                    // Body of def is the macro invocation (non lazy)
-                    case DefDef (_, defname, _, _, _, body) if isThisInvocation (body) =>
-                        defname.decodedName.toString
-
-                    // def has a block body
-                    case d @ DefDef (_, defname, _, _, _, Block (body, expr)) =>
-                        optFindValNameIn (body) match {
-                            // It's a val inside the def
-                            case Some (name) =>
-                                name
-                            // It's the value of the def's body
-                            case None if isThisInvocation (expr) =>
-                                defname.decodedName.toString
-                            case None =>
-                                macroNameStr
-                        }
-
-                    // Not a def def, look for a val def in anywhere in the enclosing template bodies
-                    case _ =>
-
-                        c.enclosingClass match {
-
-                            case ClassDef (_, _, _, Template (_, _, body)) =>
-                                getValDefNameInTrees (body)
-
-                            case ModuleDef (_, _, Template (_, _, body)) =>
-                                getValDefNameInTrees (body)
-
-                            case tree =>
-                                c.error (c.enclosingPosition,
-                                         s"makeCallWithName: unexpected context ${u.showRaw (tree)}")
-                                "dummy"
-
-                        }
-
-                }
-
+            def nameOfEnclosing : String = {
+                val s = c.internal.enclosingOwner.name.decodedName.toString
+                if (s.endsWith (" "))
+                    s.init
+                else if (s.endsWith ("$lzy"))
+                    s.dropRight (4)
+                else
+                    s
+            }
 
             /**
              * Make the call, given a tree for the method.

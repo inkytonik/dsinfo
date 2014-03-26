@@ -155,8 +155,11 @@ For example, in the following code
 
 The values bound to `x` and `y` will get the name `"x"` and `"y"`,
 respectively.
-In the definition of `z`, the macro invocation does not provide the whole
-value, so the default name `"twoargs"` will be used.
+In the definition of `z`, the macro invocation is embedded inside another
+value that is then bound to a name.
+The name `"z"` will be associated with each embedded invocation as well.
+(Note: before version 0.4.0 the behaviour in this case was different.
+An embedded value got the name of the macro, not the user-level name.)
 These examples show values in an object and in a method.
 The library also works for values in classes and traits, plus for `def`
 definitions in all of these locations.
@@ -173,7 +176,7 @@ Thus, the code above is compiled as if you had written:
         def aMethod () {
             val y = TwoArgsMaker.mkTwoArgs ("y", 2, "two")
         }
-        val z = Some (TwoArgsMaker.mkTwoArgs ("twoargs", 3, "three"))
+        val z = Some (TwoArgsMaker.mkTwoArgs ("z", 3, "three"))
     }
 
 Thus, the method `mkTwoArgs` can use the Scala names but the user does not
