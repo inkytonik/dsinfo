@@ -72,8 +72,8 @@ directory under a sub-directory for the Scala version that is being used.
 E.g., if the Scala version is 2.10, look in `dsinfo/target/scala_2.10` for
 `dsinfo_2.10-VERSION.jar` where `VERSION` is the dsinfo library version.
 
-Version 0.4 has been tested with sbt 0.13.1, Scala 2.11.0 and Java
-1.7.0_51 running on Mac OS X 10.9.1.
+Version 0.4.0 has been tested with sbt 0.13.1, Scala 2.11.0 and Java
+1.7.0_51 running on Mac OS X 10.9.2.
 
 Using the library (entity names)
 ================================
