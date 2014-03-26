@@ -28,7 +28,14 @@ object DSInfoBuild extends Build {
         Project (
             id = "root",
             base = file (".")
-        ) aggregate (dsinfo, egs, tests)
+        ) aggregate (dsinfo, egs, tests) settings (
+            publish := {
+                publish in dsinfo
+            },
+            publishLocal := {
+                publishLocal in dsinfo
+            }
+        )
 
     lazy val dsinfo =
         Project (
@@ -40,12 +47,18 @@ object DSInfoBuild extends Build {
         Project (
             id = "egs",
             base = file ("egs")
-        ) dependsOn (dsinfo)
+        ) dependsOn (dsinfo) settings (
+            publish := { },
+            publishLocal := { }
+        )
 
     lazy val tests =
         Project (
             id = "tests",
             base = file ("tests")
-        ) dependsOn (egs)
+        ) dependsOn (egs) settings (
+            publish := { },
+            publishLocal := { }
+        )
 
 }
