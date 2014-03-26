@@ -203,12 +203,12 @@ object DSInfo {
 
                 // The base expression: the method applied to the first argument list
                 // with the name pre-pended
-                val base = q"$method ($nameOfEnclosing, ..$args1)"
+                val base = Apply (method, Literal (Constant (nameOfEnclosing)) :: args1)
 
                 // Wrap the base in as many applications as are needed to pass the
                 // other argument lists (if any)
                 val result = argsn.foldLeft (base) {
-                                 case (t, a) => q"$t (..$a)"
+                                 case (t, a) => Apply (t, a)
                              }
 
                 // Hack to avoid Scala bug SI-6743. Set the position of the result tree
@@ -239,9 +239,7 @@ object DSInfo {
                             Ident (TermName (encode (components.head)))
                     val method =
                         components.tail.foldLeft (head) {
-                            case (t, s) =>
-                                val sname = TermName (encode (s))
-                                q"$t.$sname"
+                            case (t, s) => Select (t, TermName (encode (s)))
                         }
 
                     // println (s"method = $method")
@@ -267,13 +265,41 @@ object DSInfo {
 
         c.macroApplication match {
 
-            // Application without type argument
-            case q"$obj.$macroName (..$args) (...$argss)" =>
-                constructCall (obj, macroName, args, argss)
+            // No arguments
+            case Select (obj, macroName) =>
+                constructCall (obj, macroName, Nil, Nil)
 
-            // Application involving type argument
-            case q"$obj.$macroName[$t] (..$args) (...$argss)" =>
-                constructCall (obj, macroName, args, argss)
+            // One argument list
+            case Apply (Select (obj, macroName), args) =>
+                constructCall (obj, macroName, args, Nil)
+
+            // Two argument lists
+            case Apply (Apply (Select (obj, macroName), args1), args2) =>
+                constructCall (obj, macroName, args1, List (args2))
+
+            // Three argument lists
+            case Apply (Apply (Apply (Select (obj, macroName), args1), args2), args3) =>
+                constructCall (obj, macroName, args1, List (args2, args3))
+
+            // Four argument lists
+            case Apply (Apply (Apply (Apply (Select (obj, macroName), args1), args2), args3), args4) =>
+                constructCall (obj, macroName, args1, List (args2, args3, args4))
+
+            // One argument list + type application
+            case Apply (TypeApply (Select (obj, macroName), _), args1) =>
+                constructCall (obj, macroName, args1, Nil)
+
+            // Two arguments list + type application
+            case Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2) =>
+                constructCall (obj, macroName, args1, List (args2))
+
+            // Three argument lists + type application
+            case Apply (Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2), args3) =>
+                constructCall (obj, macroName, args1, List (args2, args3))
+
+            // Four argument lists + type application
+            case Apply (Apply (Apply (Apply (TypeApply (Select (obj, macroName), _), args1), args2), args3), args4) =>
+                constructCall (obj, macroName, args1, List (args2, args3, args4))
 
             case t =>
                 c.error (c.enclosingPosition,
