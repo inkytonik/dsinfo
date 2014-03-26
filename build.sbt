@@ -6,9 +6,9 @@ organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 // Scala compiler settings
 
-scalaVersion in ThisBuild := "2.11.0-M8"
+scalaVersion in ThisBuild := "2.11.0-RC3"
 
-scalaBinaryVersion in ThisBuild := "2.11.0-M8"
+scalaBinaryVersion in ThisBuild := "2.11.0-RC3"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked")
 
@@ -25,6 +25,13 @@ scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions, baseDire
 }
 
 scalacOptions in ThisBuild in Test <<= scalacOptions in ThisBuild in Compile
+
+// Dependency resolution
+
+resolvers in ThisBuild ++= Seq (
+    Resolver.sonatypeRepo ("releases"),
+    Resolver.sonatypeRepo ("snapshots")
+)
 
 // Dependencies
 

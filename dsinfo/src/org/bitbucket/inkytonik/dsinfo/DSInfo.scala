@@ -74,7 +74,7 @@ object DSInfo {
             /**
              * The string of the macro name.
              */
-            val macroNameStr = macroName.decoded
+            val macroNameStr = macroName.decodedName.toString
 
             /**
              * Is this tree this macro invocation?
@@ -89,8 +89,8 @@ object DSInfo {
              */
             val isThisVal : PartialFunction[c.Tree,String] = {
 
-                case ValDef (_, name, _, rhs) if isThisInvocation (rhs) =>
-                    name.decoded
+                case d @ ValDef (_, name, _, rhs) if isThisInvocation (rhs) =>
+                    name.decodedName.toString
 
             }
 
@@ -152,11 +152,11 @@ object DSInfo {
                     //      foo$lzy
                     //   }
                     case DefDef (_, defname, _, _, _, Block (List (Assign (_, exp)), _)) if isThisInvocation (exp) =>
-                        defname.decoded
+                        defname.decodedName.toString
 
                     // Body of def is the macro invocation (non lazy)
                     case DefDef (_, defname, _, _, _, body) if isThisInvocation (body) =>
-                        defname.decoded
+                        defname.decodedName.toString
 
                     // def has a block body
                     case d @ DefDef (_, defname, _, _, _, Block (body, expr)) =>
@@ -166,7 +166,7 @@ object DSInfo {
                                 name
                             // It's the value of the def's body
                             case None if isThisInvocation (expr) =>
-                                defname.decoded
+                                defname.decodedName.toString
                             case None =>
                                 macroNameStr
                         }
