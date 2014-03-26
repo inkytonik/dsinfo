@@ -118,12 +118,16 @@ object DSInfo {
 
                 var optName : Option[String] = None
 
-                override def traverse (tree : c.Tree) {
-                    if (isThisVal.isDefinedAt (tree))
-                        optName = Some (isThisVal (tree))
-                    else
-                        super.traverse (tree)
-                }
+                override def traverse (tree : c.Tree) =
+                    tree match {
+
+                        case ValDef (_, valname, _, rhs) if isThisInvocation (rhs) =>
+                            optName = Some (valname.decodedName.toString)
+
+                        case _ =>
+                            super.traverse (tree)
+
+                    }
 
             }
 
