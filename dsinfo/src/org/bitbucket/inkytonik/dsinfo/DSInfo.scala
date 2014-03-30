@@ -59,7 +59,7 @@ object DSInfo {
         import c.{universe => u}
         import u._
 
-        import scala.reflect.NameTransformer.encode
+        import scala.reflect.NameTransformer.{encode, LOCAL_SUFFIX_STRING}
 
         /**
          * Helper function to do the real work once the macro name and arguments
@@ -144,6 +144,13 @@ object DSInfo {
             }
 
             /**
+             * The suffix used internally in the Scala compiler for the names of
+             * lazy values. Doesn't appear in the public API at the moment but
+             * leaks out when we get the name of lazy owner.
+             */
+            val LAZY_SUFFIX_STRING = "$lzy"
+
+            /**
              * Find the name of the entity for which this macro application is
              * the right-hand side, or the macro name if one can't be found.
              * For some reason some symbol names come with a space on the end
@@ -151,13 +158,8 @@ object DSInfo {
              * are there, trim the unwanted suffix.
              */
             def nameOfEnclosing : String = {
-                val s = c.internal.enclosingOwner.name.decodedName.toString
-                if (s.endsWith (" "))
-                    s.init
-                else if (s.endsWith ("$lzy"))
-                    s.dropRight (4)
-                else
-                    s
+                val str = c.internal.enclosingOwner.name.decodedName.toString
+                str.stripSuffix (LOCAL_SUFFIX_STRING).stripSuffix (LAZY_SUFFIX_STRING)
             }
 
             /**
