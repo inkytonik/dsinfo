@@ -10,7 +10,7 @@ scalaVersion in ThisBuild := "2.11.0-RC3"
 
 scalaBinaryVersion in ThisBuild := "2.11.0-RC3"
 
-scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked")
+scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked", "-Xlint")
 
 scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions, baseDirectory) map {
     (version, options, bd) =>
