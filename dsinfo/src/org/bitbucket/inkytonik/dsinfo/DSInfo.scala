@@ -48,7 +48,7 @@ object DSInfo {
      * method in the named object or package will be called. If it is qualified
      * and begins with `"this"`, then the method will be called on the same
      * object as the macro invocation.
-
+     *
      * Before the method specifier is interpreted, all occurrences of the
      * string `macroNamePat` are replaced by the name of the macro.
      *
@@ -61,7 +61,7 @@ object DSInfo {
 
         import scala.reflect.NameTransformer.{encode, LOCAL_SUFFIX_STRING}
 
-        /**
+        /*
          * Helper function to do the real work once the macro name and arguments
          * have been determined. `obj` is the object to which the macro was
          * applied. `macroName` is the name that was supplied in the call.
@@ -71,18 +71,18 @@ object DSInfo {
         def constructCall[T] (obj : c.Tree, macroName : Name, args1 : List[c.Tree],
                               argsn : List[List[c.Tree]]) : c.Expr[T] = {
 
-            /**
+            /*
              * The string of the macro name.
              */
             val macroNameStr = macroName.decodedName.toString
 
-            /**
+            /*
              * Is this tree this macro invocation?
              */
             def isThisInvocation (tree : c.Tree) : Boolean =
                 tree.pos == c.enclosingPosition
 
-            /**
+            /*
              * If the given tree is a value definition that has this macro
              * application on the right-hand side, return its name, otherwise be
              * undefined.
@@ -94,7 +94,7 @@ object DSInfo {
 
             }
 
-            /**
+            /*
              * Try to find this invocation in a `val` in a list of trees. If found,
              * return `Some (name)` where `name` is the name of the `val`, otherwise
              * return `None`.
@@ -102,7 +102,7 @@ object DSInfo {
             def optFindValNameIn (body : List[c.Tree]) : Option[String] =
                 body.collectFirst (isThisVal)
 
-            /**
+            /*
              * Try to find this invocation in a `val` in a list of trees. If found,
              * return the name of the `val`, otherwise return the macro name.
              */
@@ -131,7 +131,7 @@ object DSInfo {
 
             }
 
-            /**
+            /*
              * Run a val def traverser on a list of trees and if a matching val def is found,
              * return the name of that def. Otherwise, return the macro name. The traversal
              * is breadth-first, so we will find the most common case of val defs at the top
@@ -143,14 +143,14 @@ object DSInfo {
                 traverser.optName.getOrElse (macroNameStr)
             }
 
-            /**
+            /*
              * The suffix used internally in the Scala compiler for the names of
              * lazy values. Doesn't appear in the public API at the moment but
              * leaks out when we get the name of lazy owner.
              */
             val LAZY_SUFFIX_STRING = "$lzy"
 
-            /**
+            /*
              * Find the name of the entity for which this macro application is
              * the right-hand side, or the macro name if one can't be found.
              * For some reason some symbol names come with a space on the end
@@ -162,7 +162,7 @@ object DSInfo {
                 str.stripSuffix (LOCAL_SUFFIX_STRING).stripSuffix (LAZY_SUFFIX_STRING)
             }
 
-            /**
+            /*
              * Make the call, given a tree for the method.
              */
             def makeCall[T] (method : c.Tree) : c.Expr[T] = {
