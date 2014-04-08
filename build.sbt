@@ -6,9 +6,9 @@ organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 // Scala compiler settings
 
-scalaVersion in ThisBuild := "2.11.0-RC3"
+scalaVersion in ThisBuild := "2.11.0-RC4"
 
-scalaBinaryVersion in ThisBuild := "2.11.0-RC3"
+scalaBinaryVersion in ThisBuild := "2.11.0-RC4"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked", "-Xlint")
 
