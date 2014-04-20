@@ -1,14 +1,12 @@
 // Main settings
 
-version in ThisBuild := "0.4.0-SNAPSHOT"
+version in ThisBuild := "0.4.0"
 
 organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 // Scala compiler settings
 
-scalaVersion in ThisBuild := "2.11.0-RC4"
-
-scalaBinaryVersion in ThisBuild := "2.11.0-RC4"
+scalaVersion in ThisBuild := "2.11.0"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked", "-Xlint")
 
