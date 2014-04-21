@@ -22,20 +22,15 @@
 import sbt._
 import Keys._
 
+import com.typesafe.sbt.pgp.PgpKeys.{publishSigned, publishLocalSigned}
+
 object DSInfoBuild extends Build {
 
     lazy val root =
         Project (
             id = "root",
             base = file (".")
-        ) aggregate (dsinfo, egs, tests) settings (
-            publish := {
-                publish in dsinfo
-            },
-            publishLocal := {
-                publishLocal in dsinfo
-            }
-        )
+        ) aggregate (dsinfo, egs, tests)
 
     lazy val dsinfo =
         Project (
@@ -47,18 +42,12 @@ object DSInfoBuild extends Build {
         Project (
             id = "egs",
             base = file ("egs")
-        ) dependsOn (dsinfo) settings (
-            publish := { },
-            publishLocal := { }
-        )
+        ) dependsOn (dsinfo)
 
     lazy val tests =
         Project (
             id = "tests",
             base = file ("tests")
-        ) dependsOn (egs) settings (
-            publish := { },
-            publishLocal := { }
-        )
+        ) dependsOn (egs)
 
 }

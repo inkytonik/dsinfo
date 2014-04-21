@@ -1,3 +1,5 @@
+import com.typesafe.sbt.pgp.PgpKeys.{publishSigned, publishLocalSigned}
+
 // Main settings
 
 version in ThisBuild := "0.4.0"
@@ -55,3 +57,13 @@ mainClass in ThisBuild := None
 // Don't run tests in parallel because some bits are not thread safe yet
 
 parallelExecution in ThisBuild in Test := false
+
+// Publishing
+
+publish := publish in dsinfo
+
+publishLocal := publishLocal in dsinfo
+
+publishSigned := publishSigned in dsinfo
+
+publishLocalSigned := publishLocalSigned in dsinfo
