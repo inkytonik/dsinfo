@@ -9,7 +9,7 @@ shellPrompt <<= (name, version) { (n, v) =>
 // Dependencies
 
 libraryDependencies in ThisBuild ++= Seq (
-    "org.scalatest" %% "scalatest" % "2.1.3" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.0" % "test"
 )
 
 // Specify how to find source and test files.  Main sources are
