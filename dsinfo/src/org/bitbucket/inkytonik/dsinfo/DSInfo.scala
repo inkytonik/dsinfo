@@ -68,8 +68,8 @@ object DSInfo {
          * `args1` is the first argument list; the name is pre-pended to this
          * list. `argsn` is the other argument lists. They are passed unchanged.
          */
-        def constructCall[T] (obj : c.Tree, macroName : Name, args1 : List[c.Tree],
-                              argsn : List[List[c.Tree]]) : c.Expr[T] = {
+        def constructCall[U] (obj : c.Tree, macroName : Name, args1 : List[c.Tree],
+                              argsn : List[List[c.Tree]]) : c.Expr[U] = {
 
             /*
              * The string of the macro name.
@@ -165,7 +165,7 @@ object DSInfo {
             /*
              * Make the call, given a tree for the method.
              */
-            def makeCall[T] (method : c.Tree) : c.Expr[T] = {
+            def makeCall[V] (method : c.Tree) : c.Expr[V] = {
 
                 // The base expression: the method applied to the first argument list
                 // with the name pre-pended
@@ -180,7 +180,7 @@ object DSInfo {
                 // Hack to avoid Scala bug SI-6743. Set the position of the result tree
                 // to some position. This avoids a validation error if the -Yrangepos
                 // option is given.
-                c.Expr[T] (atPos (c.enclosingPosition) (result))
+                c.Expr[V] (atPos (c.enclosingPosition) (result))
 
             }
 
