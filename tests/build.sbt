@@ -1,11 +1,5 @@
 import com.typesafe.sbt.pgp.PgpKeys.{publishSigned, publishLocalSigned}
 
-// Interactive settings
-
-shellPrompt <<= (name, version) { (n, v) =>
-     _ => "dsinfo " + n + " " + v + "> "
-}
-
 // Dependencies
 
 libraryDependencies in ThisBuild ++= Seq (
@@ -19,32 +13,28 @@ libraryDependencies in ThisBuild ++= Seq (
 //    - files whose names end in Tests.scala, which are actual test sources
 //    - Scala files within the examples src
 
-scalaSource in Compile <<= baseDirectory { _ / "src" }
+scalaSource in Compile := baseDirectory.value / "src"
 
-scalaSource in Test <<= scalaSource in Compile
+scalaSource in Test := (scalaSource in Compile).value
 
-unmanagedSources in Test <<= (scalaSource in Test) map { s => {
-    (s ** "*Tests.scala").get
-}}
+unmanagedSources in Test :=
+    (((scalaSource in Test).value) ** "*Tests.scala").get
 
-unmanagedSources in Compile <<=
-    (scalaSource in Compile, unmanagedSources in Test) map { (s, tests) =>
-        ((s ** "*.scala") --- tests).get
-    }
+unmanagedSources in Compile :=
+    (((scalaSource in Compile).value ** "*.scala") --- (unmanagedSources in Test).value).get
 
 // Resources
 
-unmanagedResourceDirectories in Compile <<= (scalaSource in Compile) { Seq (_) }
+unmanagedResourceDirectories in Compile := Seq((scalaSource in Compile).value)
 
-unmanagedResourceDirectories in Test <<= unmanagedResourceDirectories in Compile
+unmanagedResourceDirectories in Test := (unmanagedResourceDirectories in Compile).value
 
 // There are no compile resources
 unmanagedResources in Compile := Seq ()
 
 // Test resources are the non-Scala files in the source that are not hidden
-unmanagedResources in Test <<= (scalaSource in Test) map { s => {
-    (s ** (-"*.scala" && -HiddenFileFilter)).get
-}}
+unmanagedResources in Test :=
+    ((scalaSource in Test).value ** (-"*.scala" && -HiddenFileFilter)).get
 
 // Publishing
 

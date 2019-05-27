@@ -8,23 +8,22 @@ organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 // Scala compiler settings
 
-scalaVersion in ThisBuild := "2.12.0"
+scalaVersion in ThisBuild := "2.12.8"
 
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked", "-Xlint")
 
-scalacOptions in ThisBuild in Compile <<= (scalaVersion, scalacOptions, baseDirectory) map {
-    (version, options, bd) =>
-        val versionOptions =
-            if (version.startsWith ("2.9"))
-                Seq ()
-            else
-                Seq ("-feature")
-        options ++ versionOptions ++ Seq (
-            "-sourcepath", bd.getAbsolutePath
-        )
+scalacOptions in ThisBuild in Compile ++= {
+    val versionOptions =
+        if (scalaVersion.value.startsWith ("2.9"))
+            Seq ()
+        else
+            Seq ("-feature")
+    versionOptions ++ Seq (
+        "-sourcepath", baseDirectory.value.getAbsolutePath
+    )
 }
 
-scalacOptions in ThisBuild in Test <<= scalacOptions in ThisBuild in Compile
+scalacOptions in ThisBuild in Test ++= (scalacOptions in ThisBuild in Compile).value
 
 // Dependency resolution
 
@@ -35,20 +34,46 @@ resolvers in ThisBuild ++= Seq (
 
 // Dependencies
 
-libraryDependencies in ThisBuild <++= scalaVersion {
-    version =>
-        Seq (
-            "org.scala-lang" % "scala-reflect" % version
-        )
-}
+libraryDependencies in ThisBuild ++=
+    Seq (
+        "org.scala-lang" % "scala-reflect" % scalaVersion.value
+    )
 
 // Interactive settings
 
 logLevel in ThisBuild := Level.Info
 
-shellPrompt <<= (name, version) { (n, v) =>
-     _ => "dsinfo " + n + " " + v + "> "
+shellPrompt in ThisBuild := {
+    state =>
+        Project.extract(state).currentRef.project + " " + version.value +
+            " " + scalaVersion.value + "> "
 }
+
+// Sub-projects
+
+lazy val root =
+    Project (
+        id = "root",
+        base = file (".")
+    ) aggregate (dsinfo, egs, tests)
+
+lazy val dsinfo =
+    Project (
+        id = "dsinfo",
+        base = file ("dsinfo")
+    )
+
+lazy val egs =
+    Project (
+        id = "egs",
+        base = file ("egs")
+    ) dependsOn (dsinfo)
+
+lazy val tests =
+    Project (
+        id = "tests",
+        base = file ("tests")
+    ) dependsOn (egs)
 
 // No main class since dsinfo is a library
 
@@ -60,10 +85,10 @@ parallelExecution in ThisBuild in Test := false
 
 // Publishing
 
-publish := publish in dsinfo
+publish := (publish in dsinfo).value
 
-publishLocal := publishLocal in dsinfo
+publishLocal := (publishLocal in dsinfo).value
 
-publishSigned := publishSigned in dsinfo
+publishSigned := (publishSigned in dsinfo).value
 
-publishLocalSigned := publishLocalSigned in dsinfo
+publishLocalSigned := (publishLocalSigned in dsinfo).value
