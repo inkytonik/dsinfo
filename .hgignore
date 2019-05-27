@@ -9,3 +9,6 @@ src_managed
 target
 
 tags
+
+.metals
+.bloop
