@@ -10,6 +10,8 @@ organization in ThisBuild := "org.bitbucket.inkytonik.dsinfo"
 
 scalaVersion in ThisBuild := "2.12.8"
 
+crossScalaVersions in ThisBuild := Seq ("2.12.8", "2.13.0-RC2")
+
 scalacOptions in ThisBuild := Seq ("-deprecation", "-unchecked", "-Xlint")
 
 scalacOptions in ThisBuild in Compile ++= {
