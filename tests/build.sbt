@@ -3,7 +3,7 @@ import com.typesafe.sbt.pgp.PgpKeys.{publishSigned, publishLocalSigned}
 // Dependencies
 
 libraryDependencies in ThisBuild ++= Seq (
-    "org.scalatest" %% "scalatest" % "3.0.8-RC5" % "test"
+    "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )
 
 // Specify how to find source and test files.  Main sources are
